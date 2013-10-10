@@ -1,0 +1,23 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: avm_development
+  pool: 5
+  username: vagrant
+  password: vagrant
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: avm_test
+  pool: 5
+  username: vagrant
+  password: vagrant
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: avm_production
+  pool: 5
+  username: vagrant
+  password: vagrant
