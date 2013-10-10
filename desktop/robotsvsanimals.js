@@ -70,11 +70,11 @@ rva.MenuScene = pulse.Scene.extend({
 });
 
 /*
-create a map screen
+ create a map screen
  */
 
 /*
-create a tower select menu which sends selected towers to the gameScene
+ create a tower select menu which sends selected towers to the gameScene
  */
 
 rva.GameScene = pulse.Scene.extend({
@@ -85,27 +85,27 @@ rva.GameScene = pulse.Scene.extend({
         this.layer.position = { x: 375, y : 225 };
         this.addLayer(this.layer);
 
-        //var storeTower[5];//should be filled directly with selected towers
+        var storeTower=[5];//should be filled directly with selected towers
         /*storeTower[0]=new Tower({//we need art for the towers
-            //src:'',
-            size:{width:50,height:50}
-        });
-        storeTower[1]=new Tower({
-            //src:'',
-            size:{width:50,height:50}
-        });
-        storeTower[2]=new Tower({
-            //src:'',
-            size:{width:50,height:50}
-        });
-        storeTower[3]=new Tower({
-            //src:'',
-            size:{width:50,height:50}
-        });
-        storeTower[4]=new Tower({
-            //src:'',
-            size:{width:50,height:50}
-        });*/
+         size:{width:50,height:50},
+         towerType:0
+         }));
+         storeTower[1]=new Tower({
+         size:{width:50,height:50},
+         towerType:1
+         });
+         storeTower[2]=new Tower({
+         size:{width:50,height:50},
+         towerType:2
+         });
+         storeTower[3]=new Tower({
+         size:{width:50,height:50},
+         towerType:3
+         });
+         storeTower[4]=new Tower({
+         size:{width:50,height:50},
+         towerType:4
+         });*/
 
         var bg = new pulse.Sprite({
             src: 'img/menu_bg.png',
@@ -129,13 +129,15 @@ rva.GameScene = pulse.Scene.extend({
 
         var animalShop=new pulse.Layer({size:{x:150,y:150}});
         animalShop.position={x:525,y:225};
-        /*var visibleTowers[3];
-        visibleTowers[0]=storeTower[0];
-        visibleTowers[1]=storeTower[1];
-        visibleTowers[2]=storeTower[2];
-        for(var c=0;c<3;c++){
-            animalShop.addNode(visibleTowers[c]);
-        }*/
+
+        var visibleTowers=[3];
+        /* visibleTowers[0]=storeTower[0];
+         visibleTowers[1]=storeTower[1];
+         visibleTowers[2]=storeTower[2];
+         for(var c=0;c<3;c++){
+         animalShop.addNode(visibleTowers[c]);
+         }*/
+
         animalShop.events.bind('mouseWheel',function(e){
             //if up then shift tower selection up if possible, work similarly for down
         });
@@ -145,15 +147,54 @@ rva.GameScene = pulse.Scene.extend({
         this.addLayer(animalShop);
     }
 });
-/*Tower=pulse.Sprite.extend({
-    //towerType
-    //cost
-    //range
-    //fireRate
-    //damage
-    //description
+Tower=pulse.Sprite.extend({
     init: function(params){
-
         this._super(params);
+        this.towerType=params.towerType;
+        this.name=null;
+        this.cost=null;
+        this.range=null;
+        this.fireRate=null;
+        this.damage=null;
+        this.health=null;
+        this.description=null;
+        this.target=null;
+        this.canHitAir=true;
+        this.upgradable=true;
+        switch(this.towerType){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    },
+    getTarget: function(robotList){
+        for(var robot in robotList){
+            //select robot closest to base that is in range or select weakest robot in range that can actually be hit
+        }
+        this.target=robot;
+    },
+    fire:function(){
+        this.target.takeDamage(this);
+    },
+    takeDamage:function(robot){
+        if(robot.robotType==1){
+
+        }else{
+            this.health-=robot.damage;
+        }
+        if(this.health<=0){
+            //remove
+        }
+    },
+    upgrade:function(){
+        //remove cost
+        //switch based on towerType
     }
-});*/
+});
