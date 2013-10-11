@@ -89,7 +89,7 @@ rva.GameScene = pulse.Scene.extend({
         /*storeTower[0]=new Tower({//we need art for the towers
          size:{width:50,height:50},
          towerType:0
-         }));
+         });
          storeTower[1]=new Tower({
          size:{width:50,height:50},
          towerType:1
@@ -155,14 +155,17 @@ Tower=pulse.Sprite.extend({
         this.cost=null;
         this.range=null;
         this.fireRate=null;
+        this.reload=0;
         this.damage=null;
         this.health=null;
         this.description=null;
         this.target=null;
         this.canHitAir=true;
+        this.level=1;
         this.upgradable=true;
         switch(this.towerType){
             case 0:
+                this.src='Graphics/Characters/squirrel.png';
                 break;
             case 1:
                 break;
@@ -173,6 +176,7 @@ Tower=pulse.Sprite.extend({
             case 4:
                 break;
         }
+        this.size={width:50,height:50};
     },
     getTarget: function(robotList){
         for(var robot in robotList){
@@ -181,7 +185,10 @@ Tower=pulse.Sprite.extend({
         this.target=robot;
     },
     fire:function(){
-        this.target.takeDamage(this);
+        if(this.reload==0){
+            this.target.takeDamage(this);
+            this.reload=this.fireRate;
+        }
     },
     takeDamage:function(robot){
         if(robot.robotType==1){
