@@ -86,11 +86,13 @@ rva.GameScene = pulse.Scene.extend({
         this.addLayer(this.layer);
 
         var storeTower=[5];//should be filled directly with selected towers
-        /*storeTower[0]=new Tower({//we need art for the towers
+        storeTower[0]=new Tower({//we need art for the towers
          size:{width:50,height:50},
-         towerType:0
+         towerType:0,
+            dragDropEnabled:true,
+            dragMoveEnabled:false
          });
-         storeTower[1]=new Tower({
+        /* storeTower[1]=new Tower({
          size:{width:50,height:50},
          towerType:1
          });
@@ -149,7 +151,13 @@ rva.GameScene = pulse.Scene.extend({
 });
 Tower=pulse.Sprite.extend({
     init: function(params){
-        this._super(params);
+        /*this.towerTypeEnum{
+            SQUIRREL:{cost:15,maxHealth:50,health:50,range:2};
+            BEAR:{};
+            SPIDER{};
+            SNAKE{};
+            SKUNK{};
+        };*/
         this.towerType=params.towerType;
         this.name=null;
         this.cost=null;
@@ -157,15 +165,14 @@ Tower=pulse.Sprite.extend({
         this.fireRate=null;
         this.reload=0;
         this.damage=null;
+        this.maxHealth=null;
         this.health=null;
         this.description=null;
         this.target=null;
         this.canHitAir=true;
-        this.level=1;
-        this.upgradable=true;
         switch(this.towerType){
             case 0:
-                this.src='Graphics/Characters/squirrel.png';
+                params+='src:\'GRAPHICS/Characters/squirrel-without_helmat.png\'';
                 break;
             case 1:
                 break;
@@ -177,6 +184,7 @@ Tower=pulse.Sprite.extend({
                 break;
         }
         this.size={width:50,height:50};
+        this._super(params);
     },
     getTarget: function(robotList){
         for(var robot in robotList){
@@ -200,8 +208,13 @@ Tower=pulse.Sprite.extend({
             //remove
         }
     },
-    upgrade:function(){
-        //remove cost
-        //switch based on towerType
+    upgrade:function(stat){
+        if(stat=='HP'){
+
+        }else if(stat=='damage'){
+
+        }else if(stat=='range'){
+
+        }
     }
 });
