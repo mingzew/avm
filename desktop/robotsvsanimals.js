@@ -20,6 +20,7 @@ pulse.ready(function() {
     engine.scenes.activateScene(menuScene);
 
     engine.go(30);
+
 });
 
 var rva = {};
@@ -43,6 +44,16 @@ rva.MenuScene = pulse.Scene.extend({
         });
         bg.position = { x: 375, y: 225 };
         this.layer.addNode(bg);
+                                   
+       var titlebg = new pulse.Sprite({
+                                      src: 'img/title_bg.png',
+                                      size: {
+                                      width: 1500,
+                                      height: 190
+                                      }
+                                      });
+       titlebg.position = { x: 0, y: 155 };
+       this.layer.addNode(titlebg);
 
         var bg = new pulse.Sprite({
             src: 'img/logo.png',
@@ -53,6 +64,8 @@ rva.MenuScene = pulse.Scene.extend({
         });
         bg.position = { x: 375, y: 150 };
         this.layer.addNode(bg);
+                                   
+     
 
         // Play button
         var play = new pulse.Sprite({
@@ -62,6 +75,13 @@ rva.MenuScene = pulse.Scene.extend({
         play.events.bind('click', function(e){
             that.events.raiseEvent('gameStart', e);//should lead to the map
         });
+                                   
+        // cursor pointer on button
+        play.events.bind('mouseover', function(e){
+            document.body.style.cursor = "pointer";});
+        play.events.bind('mouseout', function(e){
+            document.body.style.cursor = "default";});
+                                   
         play.events.bind('touchEnd', function(e){
             that.events.raiseEvent('gameStart', e);//should lead to the map
         });
@@ -110,7 +130,7 @@ rva.GameScene = pulse.Scene.extend({
          });*/
 
         var bg = new pulse.Sprite({
-            src: 'img/menu_bg.png',
+            src: 'img/field_bg.png',
             size: {
                 width: 750,
                 height: 450
