@@ -171,13 +171,13 @@ rva.GameScene = pulse.Scene.extend({
 });
 Tower=pulse.Sprite.extend({
     init: function(params){
-        /*this.towerTypeEnum{
-            SQUIRREL:{cost:15,maxHealth:50,health:50,range:2};
-            BEAR:{};
-            SPIDER{};
-            SNAKE{};
-            SKUNK{};
-        };*/
+        this.towerTypeEnum={
+            SQUIRREL:{name:'Squirrel',cost:15,range:2,fireRate:0,damage:5,maxHealth:50,description:''},
+            BEAR:{name:'Bear',cost:20,range:1,fireRate:0,damage:10,maxHealth:150,description:''},
+            SPIDER:{name:'Spider',cost:5,range:2,fireRate:0,damage:0,effectLength:0,maxHealth:25,description:'',canSlow:true},
+            SNAKE:{name:'Snake',cost:10,range:1,fireRate:0,damage:1,damageOverTime:3,effectLength:5,maxHealth:17,description:''},
+            SKUNK:{name:'Skunk',cost:10,range:2,fireRate:0,damage:0,effectLength:0,maxHealth:100,description:'',canConfuse:true}
+        };
         this.towerType=params.towerType;
         this.name=null;
         this.cost=null;
@@ -185,11 +185,15 @@ Tower=pulse.Sprite.extend({
         this.fireRate=null;
         this.reload=0;
         this.damage=null;
+        this.damageOverTime=0;
+        this.effectLength=0;
         this.maxHealth=null;
-        this.health=null;
+        this.health=this.maxHealth;
         this.description=null;
         this.target=null;
         this.canHitAir=true;
+        this.canConfuse=false;
+        this.canSlow=false;
         switch(this.towerType){
             case 0:
                 params+='src:\'GRAPHICS/Characters/squirrel-without_helmat.png\'';
