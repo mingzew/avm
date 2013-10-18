@@ -275,8 +275,11 @@ GridCell.prototype.setDirectDistanceFromGoal = function (newdistance) {
 GridCell.prototype.setTower = function (tower) {
     this.Tower = tower;
 };
-GridCell.prototype.getRobots = function () {
+GridCell.prototype.getRobot = function () {
     return this.Robot;
+};
+GridCell.prototype.setRobot = function (robots) {
+    this.Robot = robots;
 };
 GridCell.prototype.addRobot = function (robot) {
     this.Robot.push(robot);
@@ -311,6 +314,18 @@ function LogicalMap() {
 }
 LogicalMap.prototype.MAP_HEIGHT = 9;
 LogicalMap.prototype.MAP_WIDTH = 18;
+LogicalMap.prototype.getMap = function () {
+    return this.Map;
+};
+LogicalMap.prototype.setMap = function (map) {
+    this.Map = map;
+};
+LogicalMap.prototype.getMAP_HEIGHT = function () {
+    return this.MAP_HEIGHT;
+};
+LogicalMap.prototype.getMAP_WIDTH = function () {
+    return this.MAP_WIDTH;
+};
 LogicalMap.prototype.updateDistancesFromGoal = function () {
     var hasupdated = true;
     while (hasupdated) {
