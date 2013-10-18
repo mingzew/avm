@@ -242,3 +242,73 @@ Tower=pulse.Sprite.extend({
         }
     }
 });
+//Begin map and map cell code
+function GridCell (tower, isgoal) {
+    if(tower)
+        this.Tower = tower;
+    if(isgoal){
+        this.DistanceFromGoal = 0;
+        this.DirectDistanceFromGoal = 0;
+    }
+    else{
+        this.DistanceFromGoal = Math.MAX_VALUE;
+        this.DirectDistanceFromGoal = Math.MAX_VALUE;
+    }
+    this.Robot = [];
+}
+GridCell.prototype.getTower = function() {
+    return this.Tower;
+};
+GridCell.prototype.getDistanceFromGoal = function() {
+    return this.DistanceFromGoal;
+};
+GridCell.prototype.getDirectDistanceFromGoal = function() {
+    return this.DirectDistanceFromGoal;
+};
+GridCell.prototype.setTower = function (tower) {
+    this.Tower = tower;
+};
+GridCell.prototype.getRobots = function() {
+    return this.Robot;
+};
+GridCell.prototype.addRobot = function(robot) {
+    this.Robot.push(robot);
+};
+GridCell.prototype.removeRobot = function(robot) {
+    var index = this.Robot.indexOf(robot);
+    this.Robot = this.Robot.splice(0,index).concat(this.Robot.splice(index + 1, this.Robot.length));
+};
+GridCell.prototype.removeAllRobots = function() {
+    this.Robot = [];
+};
+GridCell.prototype.isTowerPresent = function() {
+    return this.Tower == undefined;
+};
+GridCell.prototype.isRobotPresent = function() {
+    return this.Robot.length == 0;
+};
+GridCell.prototype.isgoal = function() {
+    return this.DistanceFromGoal == 0;
+};
+GridCell.prototype.makegoal = function() {
+    this.DistanceFromGoal = 0;
+    this.DirectDistanceFromGoal = 0;
+};
+function LogicalMap () {
+    var MAP_HEIGHT = 9;
+    var MAP_WIDTH = 18;
+    this.Map = Array[MAP_HEIGHT];
+    for(var j = 0; j < MAP_HEIGHT; j++){
+        for(var i = 0; i < MAP_WIDTH; i++){
+        //TODO
+         }
+    }
+}
+
+LogicalMap.prototype.updateDistancesFromGoal = function() {
+//TODO
+};
+LogicalMap.prototype.updateDirectDistancesFromGoal = function() {
+//TODO
+};
+//End map and map cell code
