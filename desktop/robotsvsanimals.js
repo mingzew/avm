@@ -105,7 +105,7 @@ rva.GameScene = pulse.Scene.extend({
         this.layer = new pulse.Layer();
         this.layer.position = { x: 375, y: 225 };
         this.addLayer(this.layer);
-
+/*
         var storeTower = [5];//should be filled directly with selected towers
         storeTower[0] = new Tower({//we need art for the towers
             size: {width: 50, height: 50},
@@ -113,7 +113,7 @@ rva.GameScene = pulse.Scene.extend({
             dragDropEnabled: true,
             dragMoveEnabled: false
         });
-        /* storeTower[1]=new Tower({
+         storeTower[1]=new Tower({
          size:{width:50,height:50},
          towerType:1
          });
