@@ -8,24 +8,44 @@ pulse.ready(function () {
         gameWindow: 'helloWindow'
     });
 
-    var gameScene = new rva.GameScene();
-    var menuScene = new rva.MenuScene();
-    menuScene.events.bind('gameStart', function () {
-        engine.scenes.deactivateScene(menuScene);
+	var splashScene = new rva.SplashScene();
+	var mainScene = new rva.MainScene();
+	var gameScene = new rva.GameScene();
+	
+    splashScene.events.bind('gameStart', function () {
+        engine.scenes.deactivateScene(splashScene);
+        engine.scenes.activateScene(mainScene);
+    });
+	mainScene.events.bind('gotoLevelSelect', function () {
+        engine.scenes.deactivateScene(mainScene);
+        engine.scenes.activateScene(gameScene);
+    });
+	mainScene.events.bind('gotoStore', function () {
+        engine.scenes.deactivateScene(mainScene);
+        engine.scenes.activateScene(gameScene);
+    });
+	mainScene.events.bind('gotoLeaderboard', function () {
+        engine.scenes.deactivateScene(mainScene);
         engine.scenes.activateScene(gameScene);
     });
 
-    engine.scenes.addScene(menuScene);
-    engine.scenes.addScene(gameScene);
-    engine.scenes.activateScene(menuScene);
+    engine.scenes.addScene(splashScene);
+	engine.scenes.addScene(mainScene);
+	engine.scenes.addScene(gameScene);
+    engine.scenes.activateScene(splashScene);
 
     engine.go(30);
 
 });
 
+var clone = (function(){ 
+  return function (obj) { Clone.prototype=obj; return new Clone() };
+  function Clone(){}
+}());
+
 var rva = {};
 
-rva.MenuScene = pulse.Scene.extend({
+rva.SplashScene = pulse.Scene.extend({
     init: function (params) {
         this._super(params);
 
@@ -87,6 +107,59 @@ rva.MenuScene = pulse.Scene.extend({
             that.events.raiseEvent('gameStart', e);//should lead to the map
         });
         this.layer.addNode(play);
+    }
+});
+
+rva.MainScene = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+        var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+
+        var bg = new pulse.Sprite({
+            src: 'img/menu_bg.png',
+            size: {
+                width: 750,
+                height: 450
+            }
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		
+
+        var titlebg = new pulse.Sprite({
+            src: 'img/title_bg.png',
+            size: {
+                width: 1500,
+                height: 170
+            }
+        });
+        titlebg.position = { x: 375, y: 100 };
+        this.layer.addNode(titlebg);
+				
+        var bg = new pulse.Sprite({
+            src: 'img/logo.png',
+            size: {
+                width: 564,
+                height: 234
+            }
+        });
+        bg.position = { x: 375, y: 90 };
+        this.layer.addNode(bg);
+		var play = buttonMaker('img/Real Play.png', 'gotoLevelSelect', 375, 250, that);
+        this.layer.addNode(play);
+		var store = buttonMaker('img/Real Store.png', 'gotoStore', 375, 325, that);
+        this.layer.addNode(store);
+		var leader = buttonMaker('img/Real Leader.png', 'gotoLeaderboard', 375, 400, that);
+        this.layer.addNode(leader);
+		console.log(play);
+
     }
 });
 
@@ -434,4 +507,27 @@ LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
         }
     }
 };
-//End map and map cell code
+
+function buttonMaker(imgSrc, eventName, xPos, yPos, screen)
+{
+		var play = new pulse.Sprite({
+            src: imgSrc,
+        });
+		
+        play.position = { x: xPos, y: yPos};
+     
+		play.events.bind('click', function (e) {
+            screen.events.raiseEvent(eventName, e);//should lead to the map
+        });
+		play.events.bind('mouseover', function (e) {
+            document.body.style.cursor = "pointer";
+        });
+        play.events.bind('mouseout', function (e) {
+            document.body.style.cursor = "default";
+        });
+        play.events.bind('touchEnd', function (e) {
+            screen.events.raiseEvent(eventName, e);//should lead to the map
+        });
+
+		return play;
+}
