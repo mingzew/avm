@@ -304,12 +304,17 @@ GridCell.prototype.makegoal = function () {
     this.DistanceFromGoal = 0;
     this.DirectDistanceFromGoal = 0;
 };
-function LogicalMap() {
+function LogicalMap(goalx, goaly) {
     this.Map = Array[this.MAP_HEIGHT];
     for (var j = 0; j < this.MAP_HEIGHT; j++) {
         for (var i = 0; i < this.MAP_WIDTH; i++) {
             this.Map[i][j] = new GridCell();
         }
+    }
+    if((goalx || goalx == 0) && (goaly || goaly == 0)){
+        this.Map[goalx][goaly].makegoal();
+        this.Map.updateDistancesFromGoal();
+        this.Map.updateDirectDistancesFromGoal();
     }
 }
 LogicalMap.prototype.MAP_HEIGHT = 9;
@@ -326,12 +331,27 @@ LogicalMap.prototype.getMAP_HEIGHT = function () {
 LogicalMap.prototype.getMAP_WIDTH = function () {
     return this.MAP_WIDTH;
 };
+//Supposedly will simplify the targeting algorithm for towers
+LogicalMap.prototype.getNearestToGoalCellContainingRobot = function () {
+    var qeue = [];
+    for(var j = 0; j < this.MAP_HEIGHT; j++){
+        for(var i = 0; i < this.MAP_WIDTH; i++){
+            qeue.push(this.MAP[i][j]);
+        }
+    }
+    qeue.sort(function(a,b){return a.getDistanceFromGoal()- b.getDistanceFromGoal()});
+    for(var k = 0; k < qeue.length; k++){
+        if(qeue[k].getRobot().length > 0) return qeue[k];
+    }
+    //TODO replace next line with a more appropriate return value for when no cell contains any robots
+    return null;
+};
 LogicalMap.prototype.updateDistancesFromGoal = function () {
     var hasupdated = true;
     while (hasupdated) {
         hasupdated = false;
-        for (var j = 0; j < MAP_HEIGHT; j++) {
-            for (var i = 0; i < MAP_WIDTH; i++) {
+        for (var j = 0; j < this.MAP_HEIGHT; j++) {
+            for (var i = 0; i < this.MAP_WIDTH; i++) {
                 var currentlowest = this.getDistanceFromGoal();
                 var temp;
                 if (i > 0) {
