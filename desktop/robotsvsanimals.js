@@ -178,6 +178,7 @@ rva.GameScene = pulse.Scene.extend({
         this.layer = new pulse.Layer();
         this.layer.position = { x: 375, y: 225 };
         this.addLayer(this.layer);
+<<<<<<< HEAD
         /*
          var storeTower = [5];//should be filled directly with selected towers
          storeTower[0] = new Tower({//we need art for the towers
@@ -185,6 +186,15 @@ rva.GameScene = pulse.Scene.extend({
          towerType: 0,
          dragDropEnabled: true,
          dragMoveEnabled: false
+=======
+
+        var storeTower=[5];//should be filled directly with selected towers
+        /*storeTower[0]=new Tower({//we need art for the towers
+            size:{width:50,height:50},
+            towerType:SQUIRREL,
+            dragDropEnabled:true,
+            dragMoveEnabled:false
+>>>>>>> Towers
          });
          storeTower[1]=new Tower({
          size:{width:50,height:50},
@@ -243,6 +253,7 @@ rva.GameScene = pulse.Scene.extend({
         this.addLayer(animalShop);
     }
 });
+<<<<<<< HEAD
 Tower = pulse.Sprite.extend({
     init: function (params) {
         this.towerTypeEnum = {
@@ -292,20 +303,74 @@ Tower = pulse.Sprite.extend({
     },
     fire: function () {
         if (this.reload == 0) {
+=======
+towerTypeEnum={
+    SQUIRREL:{name:'Squirrel',texture:'GRAPHICS/Characters/squirrel-without-helmat.png',cost:15,range:2,fireRate:0,damage:5,maxHealth:50,description:''},
+    BEAR:{name:'Bear',texture:'GRAPHICS/Characters/bear.png',cost:20,range:1,fireRate:0,damage:10,maxHealth:150,description:''},
+    SPIDER:{name:'Spider',cost:5,range:2,fireRate:0,damage:0,effectLength:0,maxHealth:25,description:'',canSlow:true},
+    SNAKE:{name:'Snake',cost:10,range:1,fireRate:0,damage:1,damageOverTime:3,effectLength:5,maxHealth:17,description:''},
+    SKUNK:{name:'Skunk',cost:10,range:2,fireRate:0,damage:0,effectLength:0,maxHealth:100,description:'',canConfuse:true}
+};
+Tower=pulse.Sprite.extend({
+    init: function(params){
+        this.name=null;
+        this.cost=null;
+        this.range=null;
+        this.fireRate=null;
+        this.reload=0;
+        this.damage=null;
+        this.damageOverTime=0;
+        this.effectLength=0;
+        this.maxHealth=null;
+        this.weakTo=null;
+        //this=this.towerTypeEnum[params.towerType];
+        this.isAlive=true;
+        this.health=this.maxHealth;
+        this.description=null;
+        this.target=null;
+        this.canHitAir=true;
+        this.canConfuse=false;
+        this.canSlow=false;
+        this.size={width:50,height:50};
+        this._super(params);
+    },
+    update:function(){
+        this.reload--;
+    },
+    getTarget: function(robotList){
+        /*for(var robot in robotList){
+            //select robot closest to base that is in range or select weakest robot in range that can actually be hit
+        }*/
+        //check grid with lowest value, repeat until
+        this.target=robot;
+    },
+    fire:function(){
+        this.getTarget();
+        if(this.reload==0){
+>>>>>>> Towers
             this.target.takeDamage(this);
             this.reload = this.fireRate;
         }
     },
+<<<<<<< HEAD
     takeDamage: function (robot) {
         if (robot.robotType == 1) {
 
         } else {
             this.health -= robot.damage;
+=======
+    takeDamage:function(robot){
+        if(robot.robotType==this.weakTo){
+            this.health-=2*robot.damage;
+        }else{
+            this.health-=robot.damage;
+>>>>>>> Towers
         }
         if (this.health <= 0) {
             //remove
         }
     },
+<<<<<<< HEAD
     upgrade: function (stat) {
         if (stat == 'HP') {
 
@@ -464,6 +529,16 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                 if ((!this.Map[i][j].isTowerPresent()) && ((currentlowest + 1) < this.Map[i][j].getDistanceFromGoal())) {
                     this.Map[i][j].setDistanceFromGoal(currentlowest + 1);
                     hasupdated = true;
+=======
+    upgrade:function(stat){
+        var cost=0;
+        if(stat=='HP'){
+            cost=(this.maxHealth/5);
+            /*if(coins>=cost){
+
+            }*/
+        }else if(stat=='damage'){
+>>>>>>> Towers
 
                 }
 
