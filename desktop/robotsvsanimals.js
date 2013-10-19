@@ -317,7 +317,7 @@ Tower = pulse.Sprite.extend({
     }
 });
 //Begin map and map cell code
-function GridCell(tower, isgoal) {
+function GridCell(tower, isgoal, x, y) {
     if (tower)
         this.Tower = tower;
     if (isgoal) {
@@ -327,6 +327,12 @@ function GridCell(tower, isgoal) {
     else {
         this.DistanceFromGoal = 99999999;
         this.DirectDistanceFromGoal = 99999999;
+    }
+    if (x || x == 0){
+        this.x = x;
+    }
+    if (y || y == 0){
+        this.y = y;
     }
     this.Robot = [];
 }
@@ -379,12 +385,12 @@ GridCell.prototype.makegoal = function () {
 };
 function LogicalMap(goalx, goaly) {
     this.Map = new Array();
-    for (var k = 0; k < this.MAP_HEIGHT; k++) {
+    for (var k = 0; k < this.MAP_WIDTH; k++) {
         this.Map[k] = [];
     }
     for (var i = 0; i < this.MAP_HEIGHT; i++) {
         for (var j = 0; j < this.MAP_WIDTH; j++) {
-            this.Map[i][j] = new GridCell();
+            this.Map[j][i] = new GridCell(undefined, 0, j, i);
         }
     }
     if ((goalx || goalx == 0) && (goaly || goaly == 0)) {
@@ -410,9 +416,9 @@ LogicalMap.prototype.getMAP_WIDTH = function () {
 //Supposedly will simplify the targeting algorithm for towers
 LogicalMap.prototype.getNearestToGoalCellContainingRobot = function () {
     var qeue = [];
-    for (var i = 0; i < this.MAP_HEIGHT; i++) {
-        for (var j = 0; j < this.MAP_WIDTH; j++) {
-            qeue.push(this.MAP[i][j]);
+    for (var i = 0; i < this.MAP_WIDTH; i++) {
+        for (var j = 0; j < this.MAP_HEIGHT; j++) {
+            qeue.push(this.Map[i][j]);
         }
     }
     qeue.sort(function (a, b) {
@@ -428,8 +434,8 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
     var hasupdated = true;
     while (hasupdated) {
         hasupdated = false;
-        for (var i = 0; i < this.MAP_HEIGHT; i++) {
-            for (var j = 0; j < this.MAP_WIDTH; j++) {
+        for (var j = 0; j < this.MAP_HEIGHT; j++) {
+            for (var i = 0; i < this.MAP_WIDTH; i++) {
                 var currentlowest = this.Map[i][j].getDistanceFromGoal();
                 var temp;
                 if (i > 0) {
@@ -438,7 +444,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (i < this.MAP_HEIGHT - 1) {
+                if (i < this.MAP_WIDTH - 1) {
                     temp = this.Map[i + 1][j].getDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -450,7 +456,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (j < this.MAP_WIDTH - 1) {
+                if (j < this.MAP_HEIGHT - 1) {
                     temp = this.Map[i][j + 1].getDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -477,8 +483,8 @@ LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
     var hasupdated = true;
     while (hasupdated) {
         hasupdated = false;
-        for (var i = 0; i < this.MAP_HEIGHT; i++) {
-            for (var j = 0; j < this.MAP_WIDTH; j++) {
+        for (var j = 0; j < this.MAP_HEIGHT; j++) {
+            for (var i = 0; i < this.MAP_WIDTH; i++) {
                 var currentlowest = this.Map[i][j].getDirectDistanceFromGoal();
                 var temp;
                 if (i > 0) {
@@ -487,7 +493,7 @@ LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (i < this.MAP_HEIGHT - 1) {
+                if (i < this.MAP_WIDTH - 1) {
                     temp = this.Map[i + 1][j].getDirectDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -499,7 +505,7 @@ LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (j < this.MAP_WIDTH - 1) {
+                if (j < this.MAP_HEIGHT - 1) {
                     temp = this.Map[i][j + 1].getDirectDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -508,7 +514,6 @@ LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
                 if (((currentlowest + 1) < this.Map[i][j].getDirectDistanceFromGoal())) {
                     this.Map[i][j].setDirectDistanceFromGoal(currentlowest + 1);
                     hasupdated = true;
-
                 }
 
             }
