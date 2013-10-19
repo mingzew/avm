@@ -106,9 +106,9 @@ rva.GameScene = pulse.Scene.extend({
         this.addLayer(this.layer);
 
         var storeTower=[5];//should be filled directly with selected towers
-        storeTower[0]=new Tower({//we need art for the towers
-         size:{width:50,height:50},
-         towerType:0,
+        /*storeTower[0]=new Tower({//we need art for the towers
+            size:{width:50,height:50},
+            towerType:SQUIRREL,
             dragDropEnabled:true,
             dragMoveEnabled:false
          });
@@ -169,16 +169,15 @@ rva.GameScene = pulse.Scene.extend({
         this.addLayer(animalShop);
     }
 });
+towerTypeEnum={
+    SQUIRREL:{name:'Squirrel',texture:'GRAPHICS/Characters/squirrel-without-helmat.png',cost:15,range:2,fireRate:0,damage:5,maxHealth:50,description:''},
+    BEAR:{name:'Bear',texture:'GRAPHICS/Characters/bear.png',cost:20,range:1,fireRate:0,damage:10,maxHealth:150,description:''},
+    SPIDER:{name:'Spider',cost:5,range:2,fireRate:0,damage:0,effectLength:0,maxHealth:25,description:'',canSlow:true},
+    SNAKE:{name:'Snake',cost:10,range:1,fireRate:0,damage:1,damageOverTime:3,effectLength:5,maxHealth:17,description:''},
+    SKUNK:{name:'Skunk',cost:10,range:2,fireRate:0,damage:0,effectLength:0,maxHealth:100,description:'',canConfuse:true}
+};
 Tower=pulse.Sprite.extend({
     init: function(params){
-        this.towerTypeEnum={
-            SQUIRREL:{name:'Squirrel',cost:15,range:2,fireRate:0,damage:5,maxHealth:50,description:''},
-            BEAR:{name:'Bear',cost:20,range:1,fireRate:0,damage:10,maxHealth:150,description:''},
-            SPIDER:{name:'Spider',cost:5,range:2,fireRate:0,damage:0,effectLength:0,maxHealth:25,description:'',canSlow:true},
-            SNAKE:{name:'Snake',cost:10,range:1,fireRate:0,damage:1,damageOverTime:3,effectLength:5,maxHealth:17,description:''},
-            SKUNK:{name:'Skunk',cost:10,range:2,fireRate:0,damage:0,effectLength:0,maxHealth:100,description:'',canConfuse:true}
-        };
-        this.towerType=params.towerType;
         this.name=null;
         this.cost=null;
         this.range=null;
@@ -188,43 +187,38 @@ Tower=pulse.Sprite.extend({
         this.damageOverTime=0;
         this.effectLength=0;
         this.maxHealth=null;
+        this.weakTo=null;
+        //this=this.towerTypeEnum[params.towerType];
+        this.isAlive=true;
         this.health=this.maxHealth;
         this.description=null;
         this.target=null;
         this.canHitAir=true;
         this.canConfuse=false;
         this.canSlow=false;
-        switch(this.towerType){
-            case 0:
-                params+='src:\'GRAPHICS/Characters/squirrel-without_helmat.png\'';
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
         this.size={width:50,height:50};
         this._super(params);
     },
+    update:function(){
+        this.reload--;
+    },
     getTarget: function(robotList){
-        for(var robot in robotList){
+        /*for(var robot in robotList){
             //select robot closest to base that is in range or select weakest robot in range that can actually be hit
-        }
+        }*/
+        //check grid with lowest value, repeat until
         this.target=robot;
     },
     fire:function(){
+        this.getTarget();
         if(this.reload==0){
             this.target.takeDamage(this);
             this.reload=this.fireRate;
         }
     },
     takeDamage:function(robot){
-        if(robot.robotType==1){
-
+        if(robot.robotType==this.weakTo){
+            this.health-=2*robot.damage;
         }else{
             this.health-=robot.damage;
         }
@@ -233,8 +227,12 @@ Tower=pulse.Sprite.extend({
         }
     },
     upgrade:function(stat){
+        var cost=0;
         if(stat=='HP'){
+            cost=(this.maxHealth/5);
+            /*if(coins>=cost){
 
+            }*/
         }else if(stat=='damage'){
 
         }else if(stat=='range'){
