@@ -674,6 +674,17 @@ rva.PauseScene = pulse.Scene.extend({
         this.layer = new pulse.Layer();
         this.layer.position = { x: 375, y: 225 };
         this.addLayer(this.layer);
+                                    
+        var bg = new pulse.Sprite({
+                                  src: 'img/black.png',
+                                  size: {
+                                  width: 1500,
+                                  height: 1000
+                                  }
+                                  });
+        bg.position = { x: 0, y: 0 };
+        this.layer.addNode(bg);
+        
 
         var bg = new pulse.Sprite({
             src: 'img/pauseimage.png',
@@ -681,11 +692,9 @@ rva.PauseScene = pulse.Scene.extend({
 		bg.position = { x: 375, y: 225 };
         this.layer.addNode(bg);
 		
-		var bg = buttonMaker('img/resume.png', 'resume', 370, 200, that);
-		bg.size = { width: 250, height: 100}
+		var bg = buttonMaker('img/RESUME.png', 'resume', 370, 220, that);
 		this.layer.addNode(bg);
-		var bg = buttonMaker('img/mainmenu.png', 'mainMenu', 370,  310, that);
-			bg.size = { width: 250, height: 100}
+		var bg = buttonMaker('img/QUIT.png', 'mainMenu', 370,  310, that);
 		this.layer.addNode(bg);
     }
 });
