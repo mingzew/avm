@@ -357,11 +357,11 @@ rva.StoreScene1 = pulse.Scene.extend({
 		}
 		
 		
-		var mainMenu = buttonMaker('img/powers_active.png', '', 186, 110, that);
+		var mainMenu = buttonMaker('img/powers_active.png', '', 186, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 110, that);
+		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 110, that);
+		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 111, that);
         this.layer.addNode(mainMenu);
 		var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
@@ -432,11 +432,11 @@ rva.StoreScene2 = pulse.Scene.extend({
 			this.layer.addNode(bg);
 		}
 		
-		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 110, that);
+		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/lives_active.png', '', 284, 110, that);
+		var mainMenu = buttonMaker('img/lives_active.png', '', 284, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 110, that);
+		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 111, that);
         this.layer.addNode(mainMenu);
 		var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
@@ -507,11 +507,11 @@ rva.StoreScene3 = pulse.Scene.extend({
 			this.layer.addNode(bg);
 		}
 		
-		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 110, that);
+		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 110, that);
+		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/treats_active.png', '', 382, 110, that);
+		var mainMenu = buttonMaker('img/treats_active.png', '', 382, 111, that);
         this.layer.addNode(mainMenu);
 		var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
