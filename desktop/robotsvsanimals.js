@@ -13,6 +13,8 @@ pulse.ready(function () {
 	var storeScene = new rva.StoreScene();
 	var leaderboardScene = new rva.LeaderboardScene();
 	var gameScene = new rva.GameScene();
+	var mapScene1 = new rva.MapScene();
+	var mapScene2 = new rva.MapSceneTwo();
 	
     splashScene.events.bind('gameStart', function () {
         engine.scenes.deactivateScene(splashScene);
@@ -20,7 +22,7 @@ pulse.ready(function () {
     });
 	mainScene.events.bind('gotoLevelSelect', function () {
         engine.scenes.deactivateScene(mainScene);
-        engine.scenes.activateScene(gameScene);
+        engine.scenes.activateScene(mapScene1);
     });
 	mainScene.events.bind('gotoStore', function () {
         engine.scenes.deactivateScene(mainScene);
@@ -29,7 +31,21 @@ pulse.ready(function () {
 	mainScene.events.bind('gotoLeaderboard', function () {
         engine.scenes.deactivateScene(mainScene);
         engine.scenes.activateScene(leaderboardScene);
+    });           
+	mapScene2.events.bind('gotoLevelSelect', function () {
+        engine.scenes.deactivateScene(mapScene2);
+            engine.scenes.activateScene(mapScene1);
     });
+    
+    mapScene1.events.bind('gotoLevelSelect2', function () {
+         engine.scenes.deactivateScene(mapScene1);
+         engine.scenes.activateScene(mapScene2);
+    });
+            
+    mapScene1.events.bind('gotoGamePlay', function () {
+	  engine.scenes.deactivateScene(mapScene1);
+	  engine.scenes.activateScene(gameScene);
+	});
 	storeScene.events.bind('backToMain', function () {
         engine.scenes.deactivateScene(storeScene);
         engine.scenes.activateScene(mainScene);
@@ -53,6 +69,8 @@ pulse.ready(function () {
 	engine.scenes.addScene(storeScene);
 	engine.scenes.addScene(leaderboardScene);
 	engine.scenes.addScene(gameScene);
+	engine.scenes.addScene(mapScene1);
+	engine.scenes.addScene(mapScene2);
     engine.scenes.activateScene(splashScene);
 
     engine.go(30);
@@ -311,6 +329,126 @@ rva.LeaderboardScene = pulse.Scene.extend({
         this.layer.addNode(mainMenu);
     }
 });
+
+
+rva.MapScene = pulse.Scene.extend({
+init: function (params) {
+this._super(params);
+
+var that = this;
+
+this.layer = new pulse.Layer();
+this.layer.position = { x: 375, y: 225 };
+this.addLayer(this.layer);
+	  
+	  
+	var bg = new pulse.Sprite({
+		src: 'img/stages/parkbg.png',
+		size: {
+		width: 750,
+		height: 450
+		}
+	});
+	  bg.position = { x: 375, y: 225 };
+	  this.layer.addNode(bg);
+
+var l11 = buttonMaker('img/stages/Tree1-1.png', 'gotoGamePlay', 100, 400, that);
+var l12 = buttonMaker('img/stages/Tree1-2.png', 'gotoGamePlay', 225, 370, that);
+var l13 = buttonMaker('img/stages/Tree1-3.png', 'gotoGamePlay', 350, 360, that);
+var l14 = buttonMaker('img/stages/Tree1-4.png', 'gotoGamePlay', 475, 370, that);
+var l15 = buttonMaker('img/stages/Tree1-5.png', 'gotoGamePlay', 550, 270, that);
+var l16 = buttonMaker('img/stages/Tree1-6.png', 'gotoGamePlay', 450, 210, that);
+var l17 = buttonMaker('img/stages/Tree1-7.png', 'gotoGamePlay', 350, 180, that);
+var l18 = buttonMaker('img/stages/Tree1-8.png', 'gotoGamePlay', 300, 80, that);
+var l19 = buttonMaker('img/stages/Tree1-9.png', 'gotoGamePlay', 410, 40, that);
+var l110 = buttonMaker('img/stages/Tree1-10.png', 'gotoGamePlay', 640, 50, that);
+	  
+	  
+	  var bg = new pulse.Sprite({
+			src: 'img/stages/stage1title.png'
+		});
+	  bg.position = { x: 100, y: 75 };
+	  this.layer.addNode(bg);
+	  
+	  
+	  var nextlevel = buttonMaker('img/stages/nextlevel.png', 'gotoLevelSelect2', 660, 380, that);
+	  this.layer.addNode(nextlevel);
+
+
+this.layer.addNode(l11);
+this.layer.addNode(l12);
+this.layer.addNode(l13);
+this.layer.addNode(l14);
+this.layer.addNode(l15);
+this.layer.addNode(l16);
+this.layer.addNode(l17);
+this.layer.addNode(l18);
+this.layer.addNode(l19);
+this.layer.addNode(l110);
+
+	   }
+	   });
+
+
+rva.MapSceneTwo = pulse.Scene.extend({
+	  init: function (params) {
+	  this._super(params);
+	  
+	  var that = this;
+	  
+	  this.layer = new pulse.Layer();
+	  this.layer.position = { x: 375, y: 225 };
+	  this.addLayer(this.layer);
+	  
+	  
+	  var bg = new pulse.Sprite({
+			src: 'img/stages/arcticbg.png',
+			size: {
+			width: 750,
+			height: 450
+			}
+		});
+	  bg.position = { x: 375, y: 225 };
+	  this.layer.addNode(bg);
+	  
+	  var l11 = buttonMaker('img/stages/Igloo1-1.png', 'gotoGamePlay', 100, 400, that);
+	  var l12 = buttonMaker('img/stages/Igloo1-2.png', 'gotoGamePlay', 225, 380, that);
+	  var l13 = buttonMaker('img/stages/Igloo1-3.png', 'gotoGamePlay', 350, 360, that);
+	  var l14 = buttonMaker('img/stages/Igloo1-4.png', 'gotoGamePlay', 475, 370, that);
+	  var l15 = buttonMaker('img/stages/Igloo1-5.png', 'gotoGamePlay', 550, 290, that);
+	  var l16 = buttonMaker('img/stages/Igloo1-6.png', 'gotoGamePlay', 430, 250, that);
+	  var l17 = buttonMaker('img/stages/Igloo1-7.png', 'gotoGamePlay', 315, 220, that);
+	  var l18 = buttonMaker('img/stages/Igloo1-8.png', 'gotoGamePlay', 220, 150, that);
+	  var l19 = buttonMaker('img/stages/Igloo1-9.png', 'gotoGamePlay', 340, 90, that);
+	  var l110 = buttonMaker('img/stages/Igloo1-10.png', 'gotoGamePlay', 470, 60, that);
+	  
+	  
+	  var bg = new pulse.Sprite({
+			src: 'img/stages/stage2title.png'
+		});
+	  bg.position = { x: 100, y: 75 };
+	  this.layer.addNode(bg);
+	  
+	  
+	  var nextlevel = buttonMaker('img/stages/prevlevel.png', 'gotoLevelSelect', 660, 380, that);
+	  this.layer.addNode(nextlevel);
+	  
+	  
+	  this.layer.addNode(l11);
+	  this.layer.addNode(l12);
+	  this.layer.addNode(l13);
+	  this.layer.addNode(l14);
+	  this.layer.addNode(l15);
+	  this.layer.addNode(l16);
+	  this.layer.addNode(l17);
+	  this.layer.addNode(l18);
+	  this.layer.addNode(l19);
+	  this.layer.addNode(l110);
+	  
+	  }
+	  });
+
+
 
 /*
  create a map screen
