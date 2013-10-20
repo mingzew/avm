@@ -1062,7 +1062,7 @@ Tower=pulse.Sprite.extend({
     }
 });
 //Begin map and map cell code
-function GridCell(tower, isgoal) {
+function GridCell(tower, isgoal, x, y) {
     if (tower)
         this.Tower = tower;
     if (isgoal) {
@@ -1072,6 +1072,12 @@ function GridCell(tower, isgoal) {
     else {
         this.DistanceFromGoal = 99999999;
         this.DirectDistanceFromGoal = 99999999;
+    }
+    if (x || x == 0) {
+        this.x = x;
+    }
+    if (y || y == 0) {
+        this.y = y;
     }
     this.Robot = [];
 }
@@ -1124,12 +1130,12 @@ GridCell.prototype.makegoal = function () {
 };
 function LogicalMap(goalx, goaly) {
     this.Map = new Array();
-    for (var k = 0; k < this.MAP_HEIGHT; k++) {
+    for (var k = 0; k < this.MAP_WIDTH; k++) {
         this.Map[k] = [];
     }
     for (var i = 0; i < this.MAP_HEIGHT; i++) {
         for (var j = 0; j < this.MAP_WIDTH; j++) {
-            this.Map[i][j] = new GridCell();
+            this.Map[j][i] = new GridCell(null, 0, j, i);
         }
     }
     if ((goalx || goalx == 0) && (goaly || goaly == 0)) {
@@ -1152,29 +1158,72 @@ LogicalMap.prototype.getMAP_HEIGHT = function () {
 LogicalMap.prototype.getMAP_WIDTH = function () {
     return this.MAP_WIDTH;
 };
-//Supposedly will simplify the targeting algorithm for towers
-LogicalMap.prototype.getNearestToGoalCellContainingRobot = function () {
+LogicalMap.prototype.setTowerUpdateDistances = function (x, y, tower) {
+    this.Map[x][y].setTower(tower);
+    this.updateDistancesFromGoal();
+}
+//input: the tower which the cell needs to be in range of
+LogicalMap.prototype.getNearestToGoalCellContainingRobot = function (tower) {
+    if (!tower || !tower.range) {
+        //caller didn't provide a tower
+        return null;
+    }
     var qeue = [];
-    for (var i = 0; i < this.MAP_HEIGHT; i++) {
-        for (var j = 0; j < this.MAP_WIDTH; j++) {
-            qeue.push(this.MAP[i][j]);
+    var cell;
+    //find the cell containing the given tower
+    for (var i = 0; i < this.MAP_WIDTH; i++) {
+        for (var j = 0; j < this.MAP_HEIGHT; j++) {
+            if (this.Map[i][j].getTower() == tower) {
+                cell = this.Map[i][j];
+            }
         }
     }
+    //qeue up every cell in range
+    qeue = this.helper(cell, qeue, tower.range);
+    //starting with the closest to the goal
     qeue.sort(function (a, b) {
         return a.getDistanceFromGoal() - b.getDistanceFromGoal()
     });
-    for (var k = 0; k < qeue.length; k++) {
-        if (qeue[k].getRobot().length > 0) return qeue[k];
+    //check the qeue for a cell containing a robot
+    for (var m = 0; m < qeue.length; m++) {
+        if (qeue[m].getRobot().length > 0) return qeue[m];
     }
-    //TODO replace next line with a more appropriate return value for when no cell contains any robots
+    //no cells in range contain a robot
     return null;
 };
+LogicalMap.prototype.helper = function (cell, qeue, range) {
+    qeue.push(cell);
+    if (range <= 0) {
+        return qeue;
+    }
+    if (cell.y - 1 >= 0) {
+        if (qeue.indexOf(this.Map[cell.x][cell.y - 1]) == -1) {
+            qeue = this.helper(this.Map[cell.x][cell.y - 1], qeue, range - 1);
+        }
+    }
+    if (cell.y + 1 <= this.MAP_HEIGHT) {
+        if (qeue.indexOf(this.Map[cell.x][cell.y + 1]) == -1) {
+            qeue = this.helper(this.Map[cell.x][cell.y + 1], qeue, range - 1);
+        }
+    }
+    if (cell.x - 1 >= 0) {
+        if (qeue.indexOf(this.Map[cell.x - 1][cell.y]) == -1) {
+            qeue = this.helper(this.Map[cell.x - 1][cell.y], qeue, range - 1);
+        }
+    }
+    if (cell.x + 1 <= this.MAP_WIDTH) {
+        if (qeue.indexOf(this.Map[cell.x + 1][cell.y]) == -1) {
+            qeue = this.helper(this.Map[cell.x + 1][cell.y], qeue, range - 1);
+        }
+    }
+    return qeue;
+}
 LogicalMap.prototype.updateDistancesFromGoal = function () {
     var hasupdated = true;
     while (hasupdated) {
         hasupdated = false;
-        for (var i = 0; i < this.MAP_HEIGHT; i++) {
-            for (var j = 0; j < this.MAP_WIDTH; j++) {
+        for (var i = 0; i < this.MAP_WIDTH; i++) {
+            for (var j = 0; j < this.MAP_HEIGHT; j++) {
                 var currentlowest = this.Map[i][j].getDistanceFromGoal();
                 var temp;
                 if (i > 0) {
@@ -1183,7 +1232,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (i < this.MAP_HEIGHT - 1) {
+                if (i < this.MAP_WIDTH - 1) {
                     temp = this.Map[i + 1][j].getDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -1195,14 +1244,14 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (j < this.MAP_WIDTH - 1) {
+                if (j < this.MAP_HEIGHT - 1) {
                     temp = this.Map[i][j + 1].getDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
                     }
                 }
 
-                if (this.Map[i][j].isTowerPresent() && (currentlowest + this.Map[i][j].Tower.health) < this.Map[j][i].getDistanceFromGoal()) {
+                if (this.Map[i][j].isTowerPresent() && (currentlowest + this.Map[i][j].Tower.health) < this.Map[i][j].getDistanceFromGoal()) {
                     this.Map[i][j].DistanceFromGoal = currentlowest + this.Map[i][j].Tower.health;
                     hasupdated = true;
                 }
@@ -1214,14 +1263,15 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
 
             }
         }
-    };
+    }
+    ;
 //updateDirectDistancesFromGoal could probably be made much faster by implementing the logic in the flowchart, but should only need to run once per map creation so it's efficiency is a low priority
     LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
         var hasupdated = true;
         while (hasupdated) {
             hasupdated = false;
-            for (var i = 0; i < this.MAP_HEIGHT; i++) {
-                for (var j = 0; j < this.MAP_WIDTH; j++) {
+            for (var i = 0; i < this.MAP_WIDTH; i++) {
+                for (var j = 0; j < this.MAP_HEIGHT; j++) {
                     var currentlowest = this.Map[i][j].getDirectDistanceFromGoal();
                     var temp;
                     if (i > 0) {
@@ -1230,7 +1280,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                             currentlowest = temp;
                         }
                     }
-                    if (i < this.MAP_HEIGHT - 1) {
+                    if (i < this.MAP_WIDTH - 1) {
                         temp = this.Map[i + 1][j].getDirectDistanceFromGoal();
                         if (temp < currentlowest) {
                             currentlowest = temp;
@@ -1242,7 +1292,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                             currentlowest = temp;
                         }
                     }
-                    if (j < this.MAP_WIDTH - 1) {
+                    if (j < this.MAP_HEIGHT - 1) {
                         temp = this.Map[i][j + 1].getDirectDistanceFromGoal();
                         if (temp < currentlowest) {
                             currentlowest = temp;
@@ -1260,6 +1310,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
         }
     };
 }
+//End map and map cell code
 
 function buttonMaker(imgSrc, eventName, xPos, yPos, screen)
 {
