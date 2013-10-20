@@ -357,13 +357,13 @@ rva.StoreScene1 = pulse.Scene.extend({
 		}
 		
 		
-		var mainMenu = buttonMaker('img/powers_active.png', '', 186, 110, that);
+		var mainMenu = buttonMaker('img/powers_active.png', '', 186, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 110, that);
+		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 110, that);
+		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+		var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
     }
 });
@@ -432,13 +432,13 @@ rva.StoreScene2 = pulse.Scene.extend({
 			this.layer.addNode(bg);
 		}
 		
-		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 110, that);
+		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/lives_active.png', '', 284, 110, that);
+		var mainMenu = buttonMaker('img/lives_active.png', '', 284, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 110, that);
+		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+		var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
     }
 });
@@ -507,13 +507,13 @@ rva.StoreScene3 = pulse.Scene.extend({
 			this.layer.addNode(bg);
 		}
 		
-		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 110, that);
+		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 110, that);
+		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/treats_active.png', '', 382, 110, that);
+		var mainMenu = buttonMaker('img/treats_active.png', '', 382, 111, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+		var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
     }
 });
@@ -566,7 +566,7 @@ rva.LeaderboardScene = pulse.Scene.extend({
         var bg = new pulse.Sprite({
             src: 'GRAPHICS/LeaderboardScreen/Select Map.png',
             size: {
-                width: 200,
+            width: 200,
                 height: 350
             }
         });
@@ -585,8 +585,7 @@ rva.LeaderboardScene = pulse.Scene.extend({
         var bg = new pulse.Sprite({
             src: 'img/leaderboard.png',
             size: {
-                width: 332,
-                height: 177
+                
             }
         });
         bg.position = { x: 455, y: 190 };
@@ -602,16 +601,27 @@ rva.LeaderboardScene = pulse.Scene.extend({
         bg.position = { x: 450, y: 375 };
         this.layer.addNode(bg);
 
-        for (var i = 1; i <= 10; i++)
+                               
+      var bg = new pulse.Sprite({
+                                src: 'img/orange.png',
+                                size: {
+                                width: 70,
+                                height: 70
+                                }
+                                });
+      bg.position = { x: 70, y: 95 };
+      this.layer.addNode(bg);
+                                          
+        for (var i = 1; i <= 8; i++)
         {
             var bg = new pulse.Sprite({
-                src: 'img/1-'+i+'.png',
+                src: 'img/stages/Tree1-'+i+'.png',
                 size: {
                     width: 60,
-                    height: 50
+                    height: 60
                 }
             });
-            bg.position = { x: 70 + 70 * ((i-1)%2), y: 95 + 60 * (Math.floor((i-1)/2)) };
+            bg.position = { x: 70 + 70 * ((i-1)%2), y: 95 + 70 * (Math.floor((i-1)/2)) };
             this.layer.addNode(bg);
         }
 
@@ -619,21 +629,20 @@ rva.LeaderboardScene = pulse.Scene.extend({
         {
             var bg = buttonMaker('img/friend'+i+'.jpg', 'friendInvite', 225 + 75*i, 385, that);
             bg.size =  {
-                width: 60,
-                height: 50
+              
             }
             this.layer.addNode(bg);
         }
 
         for (var i = 1; i < 4; i++)
         {
-            var bg = buttonMaker('img/gethelp.png', 'helpRequest', 385, 100 + (50*i), that);
+            var bg = buttonMaker('img/gethelp.png', 'helpRequest', 445, 87 + (50*i), that);
             bg.size =  {
                 width: 30,
                 height: 30
             }
             this.layer.addNode(bg);
-            var bg = buttonMaker('img/help.png', 'helpSent', 415, 98 + (50*i), that);
+            var bg = buttonMaker('img/help.png', 'helpSent', 475, 87 + (50*i), that);
             bg.size =  {
                 width: 30,
                 height: 30
@@ -641,8 +650,18 @@ rva.LeaderboardScene = pulse.Scene.extend({
             this.layer.addNode(bg);
         }
 
-        var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+        var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
+                                          
+                                          
+          var bg = new pulse.Sprite({
+                                    src: 'img/stages/Tree1-1rot.png',
+                                    size:{
+                                    width: 90, height: 90
+                                    }
+                                    });
+          bg.position = { x: 650, y: 100 };
+          this.layer.addNode(bg);
     }
 });
 
@@ -718,14 +737,14 @@ var l110 = buttonMaker('img/stages/Tree1-10.png', 'gotoGamePlay', 640, 50, that)
 					height: 75
 					}
 		});
-	  bg.position = { x: 125, y: 300 };
+    bg.position = { x: 640, y: 160 };
 	  this.layer.addNode(bg);
 	  
 	  
 	  var nextlevel = buttonMaker('img/stages/nextlevel.png', 'gotoLevelSelect2', 660, 380, that);
 	  this.layer.addNode(nextlevel);
 	  
-	var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 200, that);
+	var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 260, that);
     this.layer.addNode(mainMenu);
 
 
@@ -790,14 +809,14 @@ rva.MapSceneTwo = pulse.Scene.extend({
 					height: 75
 					}
 		});
-	  bg.position = { x: 125, y: 300 };
+	  bg.position = { x: 640, y: 160 };
 	  this.layer.addNode(bg);
 	  
 	  
 	  var nextlevel = buttonMaker('img/stages/prevlevel.png', 'gotoLevelSelect', 660, 380, that);
 	  this.layer.addNode(nextlevel);
-	  
-	var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 200, that);
+    
+	var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 260, that);
     this.layer.addNode(mainMenu);
 	  
 	  this.layer.addNode(l11);
@@ -1072,7 +1091,7 @@ Tower=pulse.Sprite.extend({
     // }
 });
 //Begin map and map cell code
-function GridCell(tower, isgoal) {
+function GridCell(tower, isgoal, x, y) {
     if (tower)
         this.Tower = tower;
     if (isgoal) {
@@ -1082,6 +1101,12 @@ function GridCell(tower, isgoal) {
     else {
         this.DistanceFromGoal = 99999999;
         this.DirectDistanceFromGoal = 99999999;
+    }
+    if (x || x == 0) {
+        this.x = x;
+    }
+    if (y || y == 0) {
+        this.y = y;
     }
     this.Robot = [];
 }
@@ -1134,12 +1159,12 @@ GridCell.prototype.makegoal = function () {
 };
 function LogicalMap(goalx, goaly) {
     this.Map = new Array();
-    for (var k = 0; k < this.MAP_HEIGHT; k++) {
+    for (var k = 0; k < this.MAP_WIDTH; k++) {
         this.Map[k] = [];
     }
     for (var i = 0; i < this.MAP_HEIGHT; i++) {
         for (var j = 0; j < this.MAP_WIDTH; j++) {
-            this.Map[i][j] = new GridCell();
+            this.Map[j][i] = new GridCell(null, 0, j, i);
         }
     }
     if ((goalx || goalx == 0) && (goaly || goaly == 0)) {
@@ -1162,29 +1187,72 @@ LogicalMap.prototype.getMAP_HEIGHT = function () {
 LogicalMap.prototype.getMAP_WIDTH = function () {
     return this.MAP_WIDTH;
 };
-//Supposedly will simplify the targeting algorithm for towers
-LogicalMap.prototype.getNearestToGoalCellContainingRobot = function () {
+LogicalMap.prototype.setTowerUpdateDistances = function (x, y, tower) {
+    this.Map[x][y].setTower(tower);
+    this.updateDistancesFromGoal();
+}
+//input: the tower which the cell needs to be in range of
+LogicalMap.prototype.getNearestToGoalCellContainingRobot = function (tower) {
+    if (!tower || !tower.range) {
+        //caller didn't provide a tower
+        return null;
+    }
     var qeue = [];
-    for (var i = 0; i < this.MAP_HEIGHT; i++) {
-        for (var j = 0; j < this.MAP_WIDTH; j++) {
-            qeue.push(this.MAP[i][j]);
+    var cell;
+    //find the cell containing the given tower
+    for (var i = 0; i < this.MAP_WIDTH; i++) {
+        for (var j = 0; j < this.MAP_HEIGHT; j++) {
+            if (this.Map[i][j].getTower() == tower) {
+                cell = this.Map[i][j];
+            }
         }
     }
+    //qeue up every cell in range
+    qeue = this.helper(cell, qeue, tower.range);
+    //starting with the closest to the goal
     qeue.sort(function (a, b) {
         return a.getDistanceFromGoal() - b.getDistanceFromGoal()
     });
-    for (var k = 0; k < qeue.length; k++) {
-        if (qeue[k].getRobot().length > 0) return qeue[k];
+    //check the qeue for a cell containing a robot
+    for (var m = 0; m < qeue.length; m++) {
+        if (qeue[m].getRobot().length > 0) return qeue[m];
     }
-    //TODO replace next line with a more appropriate return value for when no cell contains any robots
+    //no cells in range contain a robot
     return null;
 };
+LogicalMap.prototype.helper = function (cell, qeue, range) {
+    qeue.push(cell);
+    if (range <= 0) {
+        return qeue;
+    }
+    if (cell.y - 1 >= 0) {
+        if (qeue.indexOf(this.Map[cell.x][cell.y - 1]) == -1) {
+            qeue = this.helper(this.Map[cell.x][cell.y - 1], qeue, range - 1);
+        }
+    }
+    if (cell.y + 1 <= this.MAP_HEIGHT) {
+        if (qeue.indexOf(this.Map[cell.x][cell.y + 1]) == -1) {
+            qeue = this.helper(this.Map[cell.x][cell.y + 1], qeue, range - 1);
+        }
+    }
+    if (cell.x - 1 >= 0) {
+        if (qeue.indexOf(this.Map[cell.x - 1][cell.y]) == -1) {
+            qeue = this.helper(this.Map[cell.x - 1][cell.y], qeue, range - 1);
+        }
+    }
+    if (cell.x + 1 <= this.MAP_WIDTH) {
+        if (qeue.indexOf(this.Map[cell.x + 1][cell.y]) == -1) {
+            qeue = this.helper(this.Map[cell.x + 1][cell.y], qeue, range - 1);
+        }
+    }
+    return qeue;
+}
 LogicalMap.prototype.updateDistancesFromGoal = function () {
     var hasupdated = true;
     while (hasupdated) {
         hasupdated = false;
-        for (var i = 0; i < this.MAP_HEIGHT; i++) {
-            for (var j = 0; j < this.MAP_WIDTH; j++) {
+        for (var i = 0; i < this.MAP_WIDTH; i++) {
+            for (var j = 0; j < this.MAP_HEIGHT; j++) {
                 var currentlowest = this.Map[i][j].getDistanceFromGoal();
                 var temp;
                 if (i > 0) {
@@ -1193,7 +1261,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (i < this.MAP_HEIGHT - 1) {
+                if (i < this.MAP_WIDTH - 1) {
                     temp = this.Map[i + 1][j].getDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -1205,14 +1273,14 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (j < this.MAP_WIDTH - 1) {
+                if (j < this.MAP_HEIGHT - 1) {
                     temp = this.Map[i][j + 1].getDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
                     }
                 }
 
-                if (this.Map[i][j].isTowerPresent() && (currentlowest + this.Map[i][j].Tower.health) < this.Map[j][i].getDistanceFromGoal()) {
+                if (this.Map[i][j].isTowerPresent() && (currentlowest + this.Map[i][j].Tower.health) < this.Map[i][j].getDistanceFromGoal()) {
                     this.Map[i][j].DistanceFromGoal = currentlowest + this.Map[i][j].Tower.health;
                     hasupdated = true;
                 }
@@ -1224,14 +1292,15 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
 
             }
         }
-    };
+    }
+    ;
 //updateDirectDistancesFromGoal could probably be made much faster by implementing the logic in the flowchart, but should only need to run once per map creation so it's efficiency is a low priority
     LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
         var hasupdated = true;
         while (hasupdated) {
             hasupdated = false;
-            for (var i = 0; i < this.MAP_HEIGHT; i++) {
-                for (var j = 0; j < this.MAP_WIDTH; j++) {
+            for (var i = 0; i < this.MAP_WIDTH; i++) {
+                for (var j = 0; j < this.MAP_HEIGHT; j++) {
                     var currentlowest = this.Map[i][j].getDirectDistanceFromGoal();
                     var temp;
                     if (i > 0) {
@@ -1240,7 +1309,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                             currentlowest = temp;
                         }
                     }
-                    if (i < this.MAP_HEIGHT - 1) {
+                    if (i < this.MAP_WIDTH - 1) {
                         temp = this.Map[i + 1][j].getDirectDistanceFromGoal();
                         if (temp < currentlowest) {
                             currentlowest = temp;
@@ -1252,7 +1321,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                             currentlowest = temp;
                         }
                     }
-                    if (j < this.MAP_WIDTH - 1) {
+                    if (j < this.MAP_HEIGHT - 1) {
                         temp = this.Map[i][j + 1].getDirectDistanceFromGoal();
                         if (temp < currentlowest) {
                             currentlowest = temp;
@@ -1270,6 +1339,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
         }
     };
 }
+//End map and map cell code
 
 function buttonMaker(imgSrc, eventName, xPos, yPos, screen)
 {
