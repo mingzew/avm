@@ -10,6 +10,8 @@ pulse.ready(function () {
 
 	var splashScene = new rva.SplashScene();
 	var mainScene = new rva.MainScene();
+	var storeScene = new rva.StoreScene();
+	var leaderboardScene = new rva.LeaderboardScene();
 	var gameScene = new rva.GameScene();
 	
     splashScene.events.bind('gameStart', function () {
@@ -22,15 +24,34 @@ pulse.ready(function () {
     });
 	mainScene.events.bind('gotoStore', function () {
         engine.scenes.deactivateScene(mainScene);
-        engine.scenes.activateScene(gameScene);
+        engine.scenes.activateScene(storeScene);
     });
 	mainScene.events.bind('gotoLeaderboard', function () {
         engine.scenes.deactivateScene(mainScene);
-        engine.scenes.activateScene(gameScene);
+        engine.scenes.activateScene(leaderboardScene);
+    });
+	storeScene.events.bind('backToMain', function () {
+        engine.scenes.deactivateScene(storeScene);
+        engine.scenes.activateScene(mainScene);
+    });
+	leaderboardScene.events.bind('backToMain', function () {
+        engine.scenes.deactivateScene(leaderboardScene);
+        engine.scenes.activateScene(mainScene);
+    });
+	leaderboardScene.events.bind('friendInvite', function () {
+	    alert("Friend invitation sent.");
+    });
+	leaderboardScene.events.bind('helpSent', function () {
+	    alert("Help sent!");
+    });
+	leaderboardScene.events.bind('helpRequest', function () {
+	    alert("Help requested.");
     });
 
     engine.scenes.addScene(splashScene);
 	engine.scenes.addScene(mainScene);
+	engine.scenes.addScene(storeScene);
+	engine.scenes.addScene(leaderboardScene);
 	engine.scenes.addScene(gameScene);
     engine.scenes.activateScene(splashScene);
 
@@ -158,8 +179,136 @@ rva.MainScene = pulse.Scene.extend({
         this.layer.addNode(store);
 		var leader = buttonMaker('img/Real Leader.png', 'gotoLeaderboard', 375, 400, that);
         this.layer.addNode(leader);
-		console.log(play);
+    }
+});
 
+rva.StoreScene = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+               var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+
+        var bg = new pulse.Sprite({
+            src: 'img/menu_bg.png',
+            size: {
+                width: 750,
+                height: 450
+            }
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+        this.layer.addNode(mainMenu);
+    }
+});
+
+rva.LeaderboardScene = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+        var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+
+        var bg = new pulse.Sprite({
+            src: 'img/menu_bg.png',
+            size: {
+                width: 750,
+                height: 450
+            }
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'GRAPHICS/LeaderboardScreen/Select Map.png',
+            size: {
+                width: 200,
+                height: 350
+            }
+        });
+		bg.position = { x: 110, y: 200 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'GRAPHICS/LeaderboardScreen/Leaderboard.png',
+            size: {
+                width: 400,
+                height: 250
+            }
+        });
+		 bg.position = { x: 450, y: 175 };
+        this.layer.addNode(bg);
+		var bg = new pulse.Sprite({
+            src: 'img/leaderboard.png',
+            size: {
+                width: 332,
+                height: 177
+            }
+        });
+		 bg.position = { x: 455, y: 190 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'GRAPHICS/LeaderboardScreen/Invite Friends.png',
+            size: {
+                width: 400,
+                height: 100
+            }
+        });
+		 bg.position = { x: 450, y: 375 };
+        this.layer.addNode(bg);
+		
+		for (var i = 1; i <= 10; i++)
+		{
+			var bg = new pulse.Sprite({
+				src: 'img/1-'+i+'.png',
+				size: {
+					width: 60,
+					height: 50
+				}
+			});
+			bg.position = { x: 70 + 70 * ((i-1)%2), y: 95 + 60 * (Math.floor((i-1)/2)) };
+			this.layer.addNode(bg);
+		}
+		
+		for (var i = 1; i <= 5; i++)
+		{
+			var bg = buttonMaker('img/friend'+i+'.jpg', 'friendInvite', 225 + 75*i, 385, that);
+			bg.size =  {
+					width: 60,
+					height: 50
+				}
+			this.layer.addNode(bg);
+		}	
+		
+		for (var i = 1; i < 4; i++)
+		{
+			var bg = buttonMaker('img/gethelp.png', 'helpRequest', 385, 100 + (50*i), that);
+			bg.size =  {
+					width: 30,
+					height: 30
+				}
+			this.layer.addNode(bg);
+			var bg = buttonMaker('img/help.png', 'helpSent', 415, 98 + (50*i), that);
+			bg.size =  {
+					width: 30,
+					height: 30
+				}
+			this.layer.addNode(bg);
+		}	
+		
+		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+        this.layer.addNode(mainMenu);
     }
 });
 
