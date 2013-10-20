@@ -10,8 +10,15 @@ pulse.ready(function () {
 
 	var splashScene = new rva.SplashScene();
 	var mainScene = new rva.MainScene();
-	var storeScene = new rva.StoreScene();
+	var storeScene1 = new rva.StoreScene1();
+	var buythunder = new rva.Buythunder();
+	var storeScene2 = new rva.StoreScene2();
+	var buylives = new rva.Buylives();
+	var storeScene3 = new rva.StoreScene3();
+	var buytreats = new rva.Buytreats();
 	var leaderboardScene = new rva.LeaderboardScene();
+	var levelComplete = new rva.LevelComplete();
+	var levelFailed = new rva.LevelFailed();
 	var gameScene = new rva.GameScene();
 	var mapScene1 = new rva.MapScene();
 	var mapScene2 = new rva.MapSceneTwo();
@@ -26,7 +33,7 @@ pulse.ready(function () {
     });
 	mainScene.events.bind('gotoStore', function () {
         engine.scenes.deactivateScene(mainScene);
-        engine.scenes.activateScene(storeScene);
+        engine.scenes.activateScene(storeScene1);
     });
 	mainScene.events.bind('gotoLeaderboard', function () {
         engine.scenes.deactivateScene(mainScene);
@@ -46,9 +53,76 @@ pulse.ready(function () {
 	  engine.scenes.deactivateScene(mapScene1);
 	  engine.scenes.activateScene(gameScene);
 	});
-	storeScene.events.bind('backToMain', function () {
-        engine.scenes.deactivateScene(storeScene);
+		mapScene1.events.bind('backToMain', function () {
+        engine.scenes.deactivateScene(mapScene1);
         engine.scenes.activateScene(mainScene);
+    });
+		mapScene2.events.bind('backToMain', function () {
+        engine.scenes.deactivateScene(mapScene2);
+        engine.scenes.activateScene(mainScene);
+    });
+	storeScene1.events.bind('backToMain', function () {
+        engine.scenes.deactivateScene(storeScene1);
+        engine.scenes.activateScene(mainScene);
+    });
+	storeScene1.events.bind('buypowerup', function () {
+        engine.scenes.activateScene(buythunder);
+    });
+	storeScene1.events.bind('toLivesTab', function () {
+        engine.scenes.deactivateScene(storeScene1);
+        engine.scenes.activateScene(storeScene2);
+    });
+	storeScene1.events.bind('toTreatsTab', function () {
+        engine.scenes.deactivateScene(storeScene1);
+        engine.scenes.activateScene(storeScene3);
+    });
+	buythunder.events.bind('purchase', function () {
+        engine.scenes.deactivateScene(buythunder);
+    });
+	buythunder.events.bind('reject', function () {
+        engine.scenes.deactivateScene(buythunder);
+    });
+	storeScene2.events.bind('backToMain', function () {
+        engine.scenes.deactivateScene(storeScene2);
+        engine.scenes.activateScene(mainScene);
+    });
+	storeScene2.events.bind('toPowersTab', function () {
+        engine.scenes.deactivateScene(storeScene2);
+        engine.scenes.activateScene(storeScene1);
+    });
+	storeScene2.events.bind('toTreatsTab', function () {
+        engine.scenes.deactivateScene(storeScene2);
+        engine.scenes.activateScene(storeScene3);
+    });
+	storeScene2.events.bind('buylives', function () {
+        engine.scenes.activateScene(buylives);
+    });
+	buylives.events.bind('purchase', function () {
+        engine.scenes.deactivateScene(buylives);
+    });
+	buylives.events.bind('reject', function () {
+        engine.scenes.deactivateScene(buylives);
+    });
+	storeScene3.events.bind('backToMain', function () {
+        engine.scenes.deactivateScene(storeScene3);
+        engine.scenes.activateScene(mainScene);
+    });
+	storeScene3.events.bind('buytreats', function () {
+        engine.scenes.activateScene(buytreats);
+    });
+	storeScene3.events.bind('toPowersTab', function () {
+        engine.scenes.deactivateScene(storeScene3);
+        engine.scenes.activateScene(storeScene1);
+    });
+	storeScene3.events.bind('toLivesTab', function () {
+        engine.scenes.deactivateScene(storeScene3);
+        engine.scenes.activateScene(storeScene2);
+    });
+	buytreats.events.bind('purchase', function () {
+        engine.scenes.deactivateScene(buytreats);
+    });
+	buytreats.events.bind('reject', function () {
+        engine.scenes.deactivateScene(buytreats);
     });
 	leaderboardScene.events.bind('backToMain', function () {
         engine.scenes.deactivateScene(leaderboardScene);
@@ -66,7 +140,12 @@ pulse.ready(function () {
 
     engine.scenes.addScene(splashScene);
 	engine.scenes.addScene(mainScene);
-	engine.scenes.addScene(storeScene);
+	engine.scenes.addScene(storeScene1);
+	engine.scenes.addScene(storeScene2);
+	engine.scenes.addScene(storeScene3);
+	engine.scenes.addScene(buythunder);
+	engine.scenes.addScene(buytreats);
+	engine.scenes.addScene(buylives);
 	engine.scenes.addScene(leaderboardScene);
 	engine.scenes.addScene(gameScene);
 	engine.scenes.addScene(mapScene1);
@@ -200,7 +279,82 @@ rva.MainScene = pulse.Scene.extend({
     }
 });
 
-rva.StoreScene = pulse.Scene.extend({
+rva.StoreScene1 = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+               var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+
+        var bg = new pulse.Sprite({
+            src: 'img/menu_bg.png',
+            size: {
+        
+            }
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'img/poweruptable.png',
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'img/storetext.png',
+			size: {width: 350, height: 75}
+        });
+        bg.position = { x: 375, y: 50 };
+        this.layer.addNode(bg);
+		
+		for (var i = 0; i < 4; i++)
+		{
+			var bg = buttonMaker('img/buybuttonsmall.png', 'buypowerup', 525, 180+(42*i), that);
+			this.layer.addNode(bg);
+		}
+		
+		
+		var mainMenu = buttonMaker('img/powers_active.png', '', 186, 110, that);
+        this.layer.addNode(mainMenu);
+		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 110, that);
+        this.layer.addNode(mainMenu);
+		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 110, that);
+        this.layer.addNode(mainMenu);
+		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+        this.layer.addNode(mainMenu);
+    }
+});
+
+rva.Buythunder = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+        var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+        var bg = new pulse.Sprite({
+            src: 'img/buythunder.png',
+        });
+		bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = buttonMaker('img/buybuttonlarge.png', 'purchase', 332, 244, that);
+		this.layer.addNode(bg);
+		var bg = buttonMaker('img/nobutton.png', 'reject', 422,  244, that);
+		this.layer.addNode(bg);
+       
+    }
+});
+
+rva.StoreScene2 = pulse.Scene.extend({
     init: function (params) {
         this._super(params);
 
@@ -221,8 +375,132 @@ rva.StoreScene = pulse.Scene.extend({
         bg.position = { x: 375, y: 225 };
         this.layer.addNode(bg);
 		
+		var bg = new pulse.Sprite({
+            src: 'img/storetext.png',
+			size: {width: 350, height: 75}
+        });
+        bg.position = { x: 375, y: 50 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'img/livestable.png',
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		for (var i = 0; i < 4; i++)
+		{
+			var bg = buttonMaker('img/buybuttonsmall.png', 'buylives', 525, 180+(42*i), that);
+			this.layer.addNode(bg);
+		}
+		
+		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 110, that);
+        this.layer.addNode(mainMenu);
+		var mainMenu = buttonMaker('img/lives_active.png', '', 284, 110, that);
+        this.layer.addNode(mainMenu);
+		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 110, that);
+        this.layer.addNode(mainMenu);
 		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
+    }
+});
+
+rva.Buylives = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+        var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+        var bg = new pulse.Sprite({
+            src: 'img/buylives.png',
+        });
+		bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = buttonMaker('img/buybuttonlarge.png', 'purchase', 332, 244, that);
+		this.layer.addNode(bg);
+		var bg = buttonMaker('img/nobutton.png', 'reject', 422,  244, that);
+		this.layer.addNode(bg);
+       
+    }
+});
+
+rva.StoreScene3 = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+               var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+
+        var bg = new pulse.Sprite({
+            src: 'img/menu_bg.png',
+            size: {
+                width: 750,
+                height: 450
+            }
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'img/storetext.png',
+			size: {width: 350, height: 75}
+        });
+        bg.position = { x: 375, y: 50 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'img/treatstable.png',
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		for (var i = 0; i < 4; i++)
+		{
+			var bg = buttonMaker('img/buybuttonsmall.png', 'buytreats', 525, 180+(42*i), that);
+			this.layer.addNode(bg);
+		}
+		
+		var mainMenu = buttonMaker('img/powers_not.png', 'toPowersTab', 186, 110, that);
+        this.layer.addNode(mainMenu);
+		var mainMenu = buttonMaker('img/lives_not.png', 'toLivesTab', 284, 110, that);
+        this.layer.addNode(mainMenu);
+		var mainMenu = buttonMaker('img/treats_active.png', '', 382, 110, that);
+        this.layer.addNode(mainMenu);
+		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+        this.layer.addNode(mainMenu);
+    }
+});
+
+rva.Buytreats = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+        var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+        var bg = new pulse.Sprite({
+            src: 'img/buytreats.png',
+        });
+		bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = buttonMaker('img/buybuttonlarge.png', 'purchase', 332, 244, that);
+		this.layer.addNode(bg);
+		var bg = buttonMaker('img/nobutton.png', 'reject', 422,  244, that);
+		this.layer.addNode(bg);
+       
     }
 });
 
@@ -370,9 +648,22 @@ var l110 = buttonMaker('img/stages/Tree1-10.png', 'gotoGamePlay', 640, 50, that)
 	  bg.position = { x: 100, y: 75 };
 	  this.layer.addNode(bg);
 	  
+	  	  var bg = new pulse.Sprite({
+			src: 'img/hearts.png',
+					size: {
+					width: 200,
+					height: 75
+					}
+		});
+	  bg.position = { x: 125, y: 300 };
+	  this.layer.addNode(bg);
+	  
 	  
 	  var nextlevel = buttonMaker('img/stages/nextlevel.png', 'gotoLevelSelect2', 660, 380, that);
 	  this.layer.addNode(nextlevel);
+	  
+	var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 200, that);
+    this.layer.addNode(mainMenu);
 
 
 this.layer.addNode(l11);
@@ -429,10 +720,22 @@ rva.MapSceneTwo = pulse.Scene.extend({
 	  bg.position = { x: 100, y: 75 };
 	  this.layer.addNode(bg);
 	  
+	  	  	  var bg = new pulse.Sprite({
+			src: 'img/hearts.png',
+					size: {
+					width: 200,
+					height: 75
+					}
+		});
+	  bg.position = { x: 125, y: 300 };
+	  this.layer.addNode(bg);
+	  
 	  
 	  var nextlevel = buttonMaker('img/stages/prevlevel.png', 'gotoLevelSelect', 660, 380, that);
 	  this.layer.addNode(nextlevel);
 	  
+	var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 200, that);
+    this.layer.addNode(mainMenu);
 	  
 	  this.layer.addNode(l11);
 	  this.layer.addNode(l12);
@@ -447,6 +750,54 @@ rva.MapSceneTwo = pulse.Scene.extend({
 	  
 	  }
 	  });
+	  
+rva.LevelComplete = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+        var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+        var bg = new pulse.Sprite({
+            src: 'img/buytreats.png',
+        });
+		bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = buttonMaker('img/buybuttonlarge.png', 'purchase', 332, 244, that);
+		this.layer.addNode(bg);
+		var bg = buttonMaker('img/nobutton.png', 'reject', 422,  244, that);
+		this.layer.addNode(bg);
+       
+    }
+});
+
+rva.LevelFailed = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+        var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+        var bg = new pulse.Sprite({
+            src: 'img/buytreats.png',
+        });
+		bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = buttonMaker('img/buybuttonlarge.png', 'purchase', 332, 244, that);
+		this.layer.addNode(bg);
+		var bg = buttonMaker('img/nobutton.png', 'reject', 422,  244, that);
+		this.layer.addNode(bg);
+       
+    }
+});
 
 
 
