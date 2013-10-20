@@ -22,6 +22,7 @@ pulse.ready(function () {
 	var gameScene = new rva.GameScene();
 	var mapScene1 = new rva.MapScene();
 	var mapScene2 = new rva.MapSceneTwo();
+	var pauseScene = new rva.PauseScene();
 
     splashScene.events.bind('gameStart', function () {
         engine.scenes.deactivateScene(splashScene);
@@ -137,6 +138,40 @@ pulse.ready(function () {
     leaderboardScene.events.bind('helpRequest', function () {
         alert("Help requested.");
     });
+	gameScene.events.bind('pause', function () {
+		engine.scenes.activateScene(pauseScene);
+    });
+	gameScene.events.bind('normalSpeed', function () {
+		//normal speed
+    });
+	gameScene.events.bind('fastForward', function () {
+		//fast forward
+    });
+	pauseScene.events.bind('resume', function () {
+		engine.scenes.deactivateScene(pauseScene);
+    });
+	pauseScene.events.bind('mainMenu', function () {
+		engine.scenes.deactivateScene(pauseScene);
+		engine.scenes.deactivateScene(gameScene);
+		engine.scenes.activateScene(mainScene);
+    });
+	levelComplete.events.bind('playagain', function () {
+		engine.scenes.deactivateScene(levelComplete);
+    });
+	levelComplete.events.bind('continue', function () {
+		engine.scenes.deactivateScene(levelComplete);
+		engine.scenes.deactivateScene(gameScene);
+		engine.scenes.activateScene(mapScene1);
+    });
+	levelFailed.events.bind('playagain', function () {
+		engine.scenes.deactivateScene(levelFailed);
+    });
+	levelFailed.events.bind('continue', function () {
+		engine.scenes.deactivateScene(levelFailed);
+		engine.scenes.deactivateScene(gameScene);
+		engine.scenes.activateScene(mapScene1);
+    });
+	
 
     engine.scenes.addScene(splashScene);
 	engine.scenes.addScene(mainScene);
@@ -150,6 +185,9 @@ pulse.ready(function () {
 	engine.scenes.addScene(gameScene);
 	engine.scenes.addScene(mapScene1);
 	engine.scenes.addScene(mapScene2);
+	engine.scenes.addScene(pauseScene);
+	engine.scenes.addScene(levelComplete);
+	engine.scenes.addScene(levelFailed);
     engine.scenes.activateScene(splashScene);
 
     engine.go(30);
@@ -608,6 +646,31 @@ rva.LeaderboardScene = pulse.Scene.extend({
     }
 });
 
+rva.PauseScene = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+        var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+        var bg = new pulse.Sprite({
+            src: 'img/pauseimage.png',
+        });
+		bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = buttonMaker('img/resume.png', 'resume', 370, 200, that);
+		bg.size = { width: 250, height: 100}
+		this.layer.addNode(bg);
+		var bg = buttonMaker('img/mainmenu.png', 'mainMenu', 370,  310, that);
+			bg.size = { width: 250, height: 100}
+		this.layer.addNode(bg);
+    }
+});
+
 
 rva.MapScene = pulse.Scene.extend({
 init: function (params) {
@@ -761,51 +824,16 @@ rva.LevelComplete = pulse.Scene.extend({
         this.layer.position = { x: 375, y: 225 };
         this.addLayer(this.layer);
 
-
         var bg = new pulse.Sprite({
-            src: 'img/stages/parkbg.png',
-            size: {
-                width: 750,
-                height: 450
-            }
+            src: 'img/levelcomplete.png',
         });
-        bg.position = { x: 375, y: 225 };
+		bg.position = { x: 375, y: 225 };
         this.layer.addNode(bg);
-
-        var l11 = buttonMaker('img/stages/Tree1-1.png', 'gotoGamePlay', 100, 400, that);
-        var l12 = buttonMaker('img/stages/Tree1-2.png', 'gotoGamePlay', 225, 370, that);
-        var l13 = buttonMaker('img/stages/Tree1-3.png', 'gotoGamePlay', 350, 360, that);
-        var l14 = buttonMaker('img/stages/Tree1-4.png', 'gotoGamePlay', 475, 370, that);
-        var l15 = buttonMaker('img/stages/Tree1-5.png', 'gotoGamePlay', 550, 270, that);
-        var l16 = buttonMaker('img/stages/Tree1-6.png', 'gotoGamePlay', 450, 210, that);
-        var l17 = buttonMaker('img/stages/Tree1-7.png', 'gotoGamePlay', 350, 180, that);
-        var l18 = buttonMaker('img/stages/Tree1-8.png', 'gotoGamePlay', 300, 80, that);
-        var l19 = buttonMaker('img/stages/Tree1-9.png', 'gotoGamePlay', 410, 40, that);
-        var l110 = buttonMaker('img/stages/Tree1-10.png', 'gotoGamePlay', 640, 50, that);
-
-
-        var bg = new pulse.Sprite({
-            src: 'img/stages/stage1title.png'
-        });
-        bg.position = { x: 100, y: 75 };
-        this.layer.addNode(bg);
-
-
-        var nextlevel = buttonMaker('img/stages/nextlevel.png', 'gotoLevelSelect2', 660, 380, that);
-        this.layer.addNode(nextlevel);
-
-
-        this.layer.addNode(l11);
-        this.layer.addNode(l12);
-        this.layer.addNode(l13);
-        this.layer.addNode(l14);
-        this.layer.addNode(l15);
-        this.layer.addNode(l16);
-        this.layer.addNode(l17);
-        this.layer.addNode(l18);
-        this.layer.addNode(l19);
-        this.layer.addNode(l110);
-
+		
+		var bg = buttonMaker('img/playagain.png', 'playagain', 280, 265, that);
+		this.layer.addNode(bg);
+		var bg = buttonMaker('img/continue.png', 'continue', 465,  265, that);
+		this.layer.addNode(bg);
     }
 });
 
@@ -820,47 +848,15 @@ rva.LevelFailed = pulse.Scene.extend({
         this.addLayer(this.layer);
 
         var bg = new pulse.Sprite({
-            src: 'img/stages/arcticbg.png',
-            size: {
-                width: 750,
-                height: 450
-            }
+            src: 'img/gameover.png',
         });
-        bg.position = { x: 375, y: 225 };
+		bg.position = { x: 375, y: 225 };
         this.layer.addNode(bg);
-
-        var l11 = buttonMaker('img/stages/Igloo1-1.png', 'gotoGamePlay', 100, 400, that);
-        var l12 = buttonMaker('img/stages/Igloo1-2.png', 'gotoGamePlay', 225, 380, that);
-        var l13 = buttonMaker('img/stages/Igloo1-3.png', 'gotoGamePlay', 350, 360, that);
-        var l14 = buttonMaker('img/stages/Igloo1-4.png', 'gotoGamePlay', 475, 370, that);
-        var l15 = buttonMaker('img/stages/Igloo1-5.png', 'gotoGamePlay', 550, 290, that);
-        var l16 = buttonMaker('img/stages/Igloo1-6.png', 'gotoGamePlay', 430, 250, that);
-        var l17 = buttonMaker('img/stages/Igloo1-7.png', 'gotoGamePlay', 315, 220, that);
-        var l18 = buttonMaker('img/stages/Igloo1-8.png', 'gotoGamePlay', 220, 150, that);
-        var l19 = buttonMaker('img/stages/Igloo1-9.png', 'gotoGamePlay', 340, 90, that);
-        var l110 = buttonMaker('img/stages/Igloo1-10.png', 'gotoGamePlay', 470, 60, that);
-
-        var bg = new pulse.Sprite({
-            src: 'img/stages/stage2title.png'
-        });
-        bg.position = { x: 100, y: 75 };
-        this.layer.addNode(bg);
-
-
-        var nextlevel = buttonMaker('img/stages/prevlevel.png', 'gotoLevelSelect', 660, 380, that);
-        this.layer.addNode(nextlevel);
-
-        this.layer.addNode(l11);
-        this.layer.addNode(l12);
-        this.layer.addNode(l13);
-        this.layer.addNode(l14);
-        this.layer.addNode(l15);
-        this.layer.addNode(l16);
-        this.layer.addNode(l17);
-        this.layer.addNode(l18);
-        this.layer.addNode(l19);
-        this.layer.addNode(l110);
-
+		
+		var bg = buttonMaker('img/playagain.png', 'playagain', 280, 265, that);
+		this.layer.addNode(bg);
+		var bg = buttonMaker('img/continue.png', 'continue', 465,  265, that);
+		this.layer.addNode(bg);
     }
 });
 
@@ -881,6 +877,7 @@ rva.GameScene = pulse.Scene.extend({
         this.layer = new pulse.Layer();
         this.layer.position = { x: 375, y: 225 };
         this.addLayer(this.layer);
+		var that = this;
         /*
          var storeTower = [5];//should be filled directly with selected towers
          storeTower[0] = new Tower({//we need art for the towers
@@ -932,6 +929,16 @@ rva.GameScene = pulse.Scene.extend({
         });
         gridbg.position = { x: 225, y: 225 };
         this.layer.addNode(gridbg);
+		
+		var playButton = buttonMaker('GRAPHICS/Pause(In-Game)/pause_botton.png', 'pause', 545, 420, that);
+		playButton.size = {width: 30, height:30};
+		this.layer.addNode(playButton);
+		var playButton = buttonMaker('GRAPHICS/Pause(In-Game)/play_botton.png', 'normalSpeed', 595, 420, that);
+		playButton.size = {width: 30, height:30};
+		this.layer.addNode(playButton);
+		var playButton = buttonMaker('GRAPHICS/Pause(In-Game)/fastfoward_botton.png', 'fastForward', 645, 420, that);
+		playButton.size = {width: 30, height:30};
+		this.layer.addNode(playButton);
 
         var animalShop = new pulse.Layer({size: {x: 150, y: 150}});
         animalShop.position = {x: 525, y: 225};
