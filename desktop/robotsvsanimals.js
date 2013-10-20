@@ -363,7 +363,7 @@ rva.StoreScene1 = pulse.Scene.extend({
         this.layer.addNode(mainMenu);
 		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 110, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+		var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
     }
 });
@@ -438,7 +438,7 @@ rva.StoreScene2 = pulse.Scene.extend({
         this.layer.addNode(mainMenu);
 		var mainMenu = buttonMaker('img/treats_not.png', 'toTreatsTab', 382, 110, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+		var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
     }
 });
@@ -513,7 +513,7 @@ rva.StoreScene3 = pulse.Scene.extend({
         this.layer.addNode(mainMenu);
 		var mainMenu = buttonMaker('img/treats_active.png', '', 382, 110, that);
         this.layer.addNode(mainMenu);
-		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+		var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
     }
 });
@@ -566,7 +566,7 @@ rva.LeaderboardScene = pulse.Scene.extend({
         var bg = new pulse.Sprite({
             src: 'GRAPHICS/LeaderboardScreen/Select Map.png',
             size: {
-                width: 200,
+            width: 200,
                 height: 350
             }
         });
@@ -585,8 +585,7 @@ rva.LeaderboardScene = pulse.Scene.extend({
         var bg = new pulse.Sprite({
             src: 'img/leaderboard.png',
             size: {
-                width: 332,
-                height: 177
+                
             }
         });
         bg.position = { x: 455, y: 190 };
@@ -602,16 +601,27 @@ rva.LeaderboardScene = pulse.Scene.extend({
         bg.position = { x: 450, y: 375 };
         this.layer.addNode(bg);
 
-        for (var i = 1; i <= 10; i++)
+                               
+      var bg = new pulse.Sprite({
+                                src: 'img/orange.png',
+                                size: {
+                                width: 70,
+                                height: 70
+                                }
+                                });
+      bg.position = { x: 70, y: 95 };
+      this.layer.addNode(bg);
+                                          
+        for (var i = 1; i <= 8; i++)
         {
             var bg = new pulse.Sprite({
-                src: 'img/1-'+i+'.png',
+                src: 'img/stages/Tree1-'+i+'.png',
                 size: {
                     width: 60,
-                    height: 50
+                    height: 60
                 }
             });
-            bg.position = { x: 70 + 70 * ((i-1)%2), y: 95 + 60 * (Math.floor((i-1)/2)) };
+            bg.position = { x: 70 + 70 * ((i-1)%2), y: 95 + 70 * (Math.floor((i-1)/2)) };
             this.layer.addNode(bg);
         }
 
@@ -619,21 +629,20 @@ rva.LeaderboardScene = pulse.Scene.extend({
         {
             var bg = buttonMaker('img/friend'+i+'.jpg', 'friendInvite', 225 + 75*i, 385, that);
             bg.size =  {
-                width: 60,
-                height: 50
+              
             }
             this.layer.addNode(bg);
         }
 
         for (var i = 1; i < 4; i++)
         {
-            var bg = buttonMaker('img/gethelp.png', 'helpRequest', 385, 100 + (50*i), that);
+            var bg = buttonMaker('img/gethelp.png', 'helpRequest', 445, 87 + (50*i), that);
             bg.size =  {
                 width: 30,
                 height: 30
             }
             this.layer.addNode(bg);
-            var bg = buttonMaker('img/help.png', 'helpSent', 415, 98 + (50*i), that);
+            var bg = buttonMaker('img/help.png', 'helpSent', 475, 87 + (50*i), that);
             bg.size =  {
                 width: 30,
                 height: 30
@@ -641,8 +650,18 @@ rva.LeaderboardScene = pulse.Scene.extend({
             this.layer.addNode(bg);
         }
 
-        var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+        var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 410, that);
         this.layer.addNode(mainMenu);
+                                          
+                                          
+          var bg = new pulse.Sprite({
+                                    src: 'img/stages/Tree1-1rot.png',
+                                    size:{
+                                    width: 90, height: 90
+                                    }
+                                    });
+          bg.position = { x: 650, y: 100 };
+          this.layer.addNode(bg);
     }
 });
 
@@ -718,14 +737,14 @@ var l110 = buttonMaker('img/stages/Tree1-10.png', 'gotoGamePlay', 640, 50, that)
 					height: 75
 					}
 		});
-	  bg.position = { x: 125, y: 300 };
+    bg.position = { x: 640, y: 160 };
 	  this.layer.addNode(bg);
 	  
 	  
 	  var nextlevel = buttonMaker('img/stages/nextlevel.png', 'gotoLevelSelect2', 660, 380, that);
 	  this.layer.addNode(nextlevel);
 	  
-	var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 200, that);
+	var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 260, that);
     this.layer.addNode(mainMenu);
 
 
@@ -790,14 +809,14 @@ rva.MapSceneTwo = pulse.Scene.extend({
 					height: 75
 					}
 		});
-	  bg.position = { x: 125, y: 300 };
+	  bg.position = { x: 640, y: 160 };
 	  this.layer.addNode(bg);
 	  
 	  
 	  var nextlevel = buttonMaker('img/stages/prevlevel.png', 'gotoLevelSelect', 660, 380, that);
 	  this.layer.addNode(nextlevel);
-	  
-	var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 200, that);
+    
+	var mainMenu = buttonMaker('img/MAIN.png', 'backToMain', 100, 260, that);
     this.layer.addNode(mainMenu);
 	  
 	  this.layer.addNode(l11);
