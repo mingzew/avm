@@ -942,6 +942,7 @@ rva.GameScene = pulse.Scene.extend({
 
         var animalShop = new pulse.Layer({size: {x: 150, y: 150}});
         animalShop.position = {x: 525, y: 225};
+		
 
         var visibleTowers = [3];
         /* visibleTowers[0]=storeTower[0];
@@ -958,6 +959,13 @@ rva.GameScene = pulse.Scene.extend({
             //if up then shift tower selection up if possible, work similarly for down
         });
         this.addLayer(animalShop);
+		
+				 
+		 var testtower = new Tower();
+		 testtower.position = {x: 220, y: 220};
+		 testtower.size = { width: 50, height:50};
+		 this.layer.addNode(testtower);
+		 console.log(testtower);
     }
 });
 towerTypeEnum={
@@ -969,6 +977,7 @@ towerTypeEnum={
 };
 Tower=pulse.Sprite.extend({
     init: function(params){
+		params = params || {};
         this.name=null;
         this.cost=null;
         this.range=null;
@@ -988,78 +997,79 @@ Tower=pulse.Sprite.extend({
         this.canConfuse=false;
         this.canSlow=false;
         this.size={width:50,height:50};
+		params.src = 'GRAPHICS/Characters/squirrel.png';
         this._super(params);
     },
     /**
      *  Should be called in every game loop for each tower.
      */
-    update:function(){
-        if(reload==0){
-            this.fire();
-        }else{
-            this.reload--;
-        }
-    },
+    // update:function(){
+        // if(this.reload==0){
+            // this.fire();
+        // }else{
+            // this.reload--;
+        // }
+    // },
     /**
      * Searches through the map for the closest robot in range.
      * @param logicalMap
      */
-    getTarget: function(logicalMap){
-        this.target=logicalMap.prototype.getNearestToGoalCellContainingRobot(this.range);
-    },
+   // getTarget: function(logicalMap){
+        //this.target=logicalMap.prototype.getNearestToGoalCellContainingRobot(this.range);
+    //},
     /**
      * Takes a shot at the robot after targeting it.
      * @param logicalMap
      */
-    fire:function(logicalMap){
-        this.getTarget(logicalMap);
-        if(this.reload==0){
-            this.target.takeDamage(this);
-            this.reload = this.fireRate;
-        }
-    },
+    // fire:function(logicalMap){
+        // this.getTarget(logicalMap);
+        // if(this.reload==0){
+           // this.target.takeDamage(this);
+            // this.reload = this.fireRate;
+        // }
+    // },
     /**
      * Causes the tower to take damage from the robot attacking it.
      * @param robot
      */
-    takeDamage:function(robot){
-        if(robot.robotType==this.weakTo){
-            this.health-=2*robot.damage;
-        }else{
-            this.health-=robot.damage;
-        }
-        if (this.health <= 0) {
-            //remove
-        }
-    },
-    /**
-     * Upgrades a selected stat for the tower if the player has enough money.
-     * @param stat
-     * @param wealth
-     */
-    upgrade: function (stat,wealth) {
-        var cost=0;
-        if (stat == 'HP') {
-            cost=this.maxHealth/5;
-            if(wealth>=cost){
-                wealth-=cost;
-                this.maxHealth+=20;
-                this.health=this.maxHealth;
-            }
-        } else if (stat == 'damage') {
-            cost=this.damage*30;
-            if(wealth>=cost){
-                wealth-=cost;
-                this.damage+=5;
-            }
-        } else if (stat == 'range') {
-            cost=this.range*20;
-            if(wealth>=cost){
-                wealth-=cost;
-                this.range++;
-            }
-        }
-    }
+    // takeDamage:function(robot){
+        // if(robot.robotType==this.weakTo){
+            // this.health-=2*robot.damage;
+        // }else{
+            // this.health-=robot.damage;
+        // }
+        // if (this.health <= 0) {
+           // remove
+        // }
+    // },
+    // /**
+     // * Upgrades a selected stat for the tower if the player has enough money.
+     // * @param stat
+     // * @param wealth
+     // */
+    // upgrade: function (stat,wealth) {
+        // var cost=0;
+        // if (stat == 'HP') {
+            // cost=this.maxHealth/5;
+            // if(wealth>=cost){
+                // wealth-=cost;
+                // this.maxHealth+=20;
+                // this.health=this.maxHealth;
+            // }
+        // } else if (stat == 'damage') {
+            // cost=this.damage*30;
+            // if(wealth>=cost){
+                // wealth-=cost;
+                // this.damage+=5;
+            // }
+        // } else if (stat == 'range') {
+            // cost=this.range*20;
+            // if(wealth>=cost){
+                // wealth-=cost;
+                // this.range++;
+            // }
+        // }
+    // }
 });
 //Begin map and map cell code
 function GridCell(tower, isgoal) {
