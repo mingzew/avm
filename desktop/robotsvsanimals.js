@@ -10,7 +10,11 @@ pulse.ready(function () {
 
 	var splashScene = new rva.SplashScene();
 	var mainScene = new rva.MainScene();
+	var storeScene = new rva.StoreScene();
+	var leaderboardScene = new rva.LeaderboardScene();
 	var gameScene = new rva.GameScene();
+	var mapScene1 = new rva.MapScene();
+	var mapScene2 = new rva.MapSceneTwo();
 	
     splashScene.events.bind('gameStart', function () {
         engine.scenes.deactivateScene(splashScene);
@@ -18,20 +22,55 @@ pulse.ready(function () {
     });
 	mainScene.events.bind('gotoLevelSelect', function () {
         engine.scenes.deactivateScene(mainScene);
-        engine.scenes.activateScene(gameScene);
+        engine.scenes.activateScene(mapScene1);
     });
 	mainScene.events.bind('gotoStore', function () {
         engine.scenes.deactivateScene(mainScene);
-        engine.scenes.activateScene(gameScene);
+        engine.scenes.activateScene(storeScene);
     });
 	mainScene.events.bind('gotoLeaderboard', function () {
         engine.scenes.deactivateScene(mainScene);
-        engine.scenes.activateScene(gameScene);
+        engine.scenes.activateScene(leaderboardScene);
+    });           
+	mapScene2.events.bind('gotoLevelSelect', function () {
+        engine.scenes.deactivateScene(mapScene2);
+            engine.scenes.activateScene(mapScene1);
+    });
+    
+    mapScene1.events.bind('gotoLevelSelect2', function () {
+         engine.scenes.deactivateScene(mapScene1);
+         engine.scenes.activateScene(mapScene2);
+    });
+            
+    mapScene1.events.bind('gotoGamePlay', function () {
+	  engine.scenes.deactivateScene(mapScene1);
+	  engine.scenes.activateScene(gameScene);
+	});
+	storeScene.events.bind('backToMain', function () {
+        engine.scenes.deactivateScene(storeScene);
+        engine.scenes.activateScene(mainScene);
+    });
+	leaderboardScene.events.bind('backToMain', function () {
+        engine.scenes.deactivateScene(leaderboardScene);
+        engine.scenes.activateScene(mainScene);
+    });
+	leaderboardScene.events.bind('friendInvite', function () {
+	    alert("Friend invitation sent.");
+    });
+	leaderboardScene.events.bind('helpSent', function () {
+	    alert("Help sent!");
+    });
+	leaderboardScene.events.bind('helpRequest', function () {
+	    alert("Help requested.");
     });
 
     engine.scenes.addScene(splashScene);
 	engine.scenes.addScene(mainScene);
+	engine.scenes.addScene(storeScene);
+	engine.scenes.addScene(leaderboardScene);
 	engine.scenes.addScene(gameScene);
+	engine.scenes.addScene(mapScene1);
+	engine.scenes.addScene(mapScene2);
     engine.scenes.activateScene(splashScene);
 
     engine.go(30);
@@ -158,10 +197,258 @@ rva.MainScene = pulse.Scene.extend({
         this.layer.addNode(store);
 		var leader = buttonMaker('img/Real Leader.png', 'gotoLeaderboard', 375, 400, that);
         this.layer.addNode(leader);
-		console.log(play);
-
     }
 });
+
+rva.StoreScene = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+               var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+
+        var bg = new pulse.Sprite({
+            src: 'img/menu_bg.png',
+            size: {
+                width: 750,
+                height: 450
+            }
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+        this.layer.addNode(mainMenu);
+    }
+});
+
+rva.LeaderboardScene = pulse.Scene.extend({
+    init: function (params) {
+        this._super(params);
+
+        var that = this;
+
+        this.layer = new pulse.Layer();
+        this.layer.position = { x: 375, y: 225 };
+        this.addLayer(this.layer);
+
+
+        var bg = new pulse.Sprite({
+            src: 'img/menu_bg.png',
+            size: {
+                width: 750,
+                height: 450
+            }
+        });
+        bg.position = { x: 375, y: 225 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'GRAPHICS/LeaderboardScreen/Select Map.png',
+            size: {
+                width: 200,
+                height: 350
+            }
+        });
+		bg.position = { x: 110, y: 200 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'GRAPHICS/LeaderboardScreen/Leaderboard.png',
+            size: {
+                width: 400,
+                height: 250
+            }
+        });
+		 bg.position = { x: 450, y: 175 };
+        this.layer.addNode(bg);
+		var bg = new pulse.Sprite({
+            src: 'img/leaderboard.png',
+            size: {
+                width: 332,
+                height: 177
+            }
+        });
+		 bg.position = { x: 455, y: 190 };
+        this.layer.addNode(bg);
+		
+		var bg = new pulse.Sprite({
+            src: 'GRAPHICS/LeaderboardScreen/Invite Friends.png',
+            size: {
+                width: 400,
+                height: 100
+            }
+        });
+		 bg.position = { x: 450, y: 375 };
+        this.layer.addNode(bg);
+		
+		for (var i = 1; i <= 10; i++)
+		{
+			var bg = new pulse.Sprite({
+				src: 'img/1-'+i+'.png',
+				size: {
+					width: 60,
+					height: 50
+				}
+			});
+			bg.position = { x: 70 + 70 * ((i-1)%2), y: 95 + 60 * (Math.floor((i-1)/2)) };
+			this.layer.addNode(bg);
+		}
+		
+		for (var i = 1; i <= 5; i++)
+		{
+			var bg = buttonMaker('img/friend'+i+'.jpg', 'friendInvite', 225 + 75*i, 385, that);
+			bg.size =  {
+					width: 60,
+					height: 50
+				}
+			this.layer.addNode(bg);
+		}	
+		
+		for (var i = 1; i < 4; i++)
+		{
+			var bg = buttonMaker('img/gethelp.png', 'helpRequest', 385, 100 + (50*i), that);
+			bg.size =  {
+					width: 30,
+					height: 30
+				}
+			this.layer.addNode(bg);
+			var bg = buttonMaker('img/help.png', 'helpSent', 415, 98 + (50*i), that);
+			bg.size =  {
+					width: 30,
+					height: 30
+				}
+			this.layer.addNode(bg);
+		}	
+		
+		var mainMenu = buttonMaker('img/Main Menu Button.png', 'backToMain', 100, 410, that);
+        this.layer.addNode(mainMenu);
+    }
+});
+
+
+rva.MapScene = pulse.Scene.extend({
+init: function (params) {
+this._super(params);
+
+var that = this;
+
+this.layer = new pulse.Layer();
+this.layer.position = { x: 375, y: 225 };
+this.addLayer(this.layer);
+	  
+	  
+	var bg = new pulse.Sprite({
+		src: 'img/stages/parkbg.png',
+		size: {
+		width: 750,
+		height: 450
+		}
+	});
+	  bg.position = { x: 375, y: 225 };
+	  this.layer.addNode(bg);
+
+var l11 = buttonMaker('img/stages/Tree1-1.png', 'gotoGamePlay', 100, 400, that);
+var l12 = buttonMaker('img/stages/Tree1-2.png', 'gotoGamePlay', 225, 370, that);
+var l13 = buttonMaker('img/stages/Tree1-3.png', 'gotoGamePlay', 350, 360, that);
+var l14 = buttonMaker('img/stages/Tree1-4.png', 'gotoGamePlay', 475, 370, that);
+var l15 = buttonMaker('img/stages/Tree1-5.png', 'gotoGamePlay', 550, 270, that);
+var l16 = buttonMaker('img/stages/Tree1-6.png', 'gotoGamePlay', 450, 210, that);
+var l17 = buttonMaker('img/stages/Tree1-7.png', 'gotoGamePlay', 350, 180, that);
+var l18 = buttonMaker('img/stages/Tree1-8.png', 'gotoGamePlay', 300, 80, that);
+var l19 = buttonMaker('img/stages/Tree1-9.png', 'gotoGamePlay', 410, 40, that);
+var l110 = buttonMaker('img/stages/Tree1-10.png', 'gotoGamePlay', 640, 50, that);
+	  
+	  
+	  var bg = new pulse.Sprite({
+			src: 'img/stages/stage1title.png'
+		});
+	  bg.position = { x: 100, y: 75 };
+	  this.layer.addNode(bg);
+	  
+	  
+	  var nextlevel = buttonMaker('img/stages/nextlevel.png', 'gotoLevelSelect2', 660, 380, that);
+	  this.layer.addNode(nextlevel);
+
+
+this.layer.addNode(l11);
+this.layer.addNode(l12);
+this.layer.addNode(l13);
+this.layer.addNode(l14);
+this.layer.addNode(l15);
+this.layer.addNode(l16);
+this.layer.addNode(l17);
+this.layer.addNode(l18);
+this.layer.addNode(l19);
+this.layer.addNode(l110);
+
+	   }
+	   });
+
+
+rva.MapSceneTwo = pulse.Scene.extend({
+	  init: function (params) {
+	  this._super(params);
+	  
+	  var that = this;
+	  
+	  this.layer = new pulse.Layer();
+	  this.layer.position = { x: 375, y: 225 };
+	  this.addLayer(this.layer);
+	  
+	  
+	  var bg = new pulse.Sprite({
+			src: 'img/stages/arcticbg.png',
+			size: {
+			width: 750,
+			height: 450
+			}
+		});
+	  bg.position = { x: 375, y: 225 };
+	  this.layer.addNode(bg);
+	  
+	  var l11 = buttonMaker('img/stages/Igloo1-1.png', 'gotoGamePlay', 100, 400, that);
+	  var l12 = buttonMaker('img/stages/Igloo1-2.png', 'gotoGamePlay', 225, 380, that);
+	  var l13 = buttonMaker('img/stages/Igloo1-3.png', 'gotoGamePlay', 350, 360, that);
+	  var l14 = buttonMaker('img/stages/Igloo1-4.png', 'gotoGamePlay', 475, 370, that);
+	  var l15 = buttonMaker('img/stages/Igloo1-5.png', 'gotoGamePlay', 550, 290, that);
+	  var l16 = buttonMaker('img/stages/Igloo1-6.png', 'gotoGamePlay', 430, 250, that);
+	  var l17 = buttonMaker('img/stages/Igloo1-7.png', 'gotoGamePlay', 315, 220, that);
+	  var l18 = buttonMaker('img/stages/Igloo1-8.png', 'gotoGamePlay', 220, 150, that);
+	  var l19 = buttonMaker('img/stages/Igloo1-9.png', 'gotoGamePlay', 340, 90, that);
+	  var l110 = buttonMaker('img/stages/Igloo1-10.png', 'gotoGamePlay', 470, 60, that);
+	  
+	  
+	  var bg = new pulse.Sprite({
+			src: 'img/stages/stage2title.png'
+		});
+	  bg.position = { x: 100, y: 75 };
+	  this.layer.addNode(bg);
+	  
+	  
+	  var nextlevel = buttonMaker('img/stages/prevlevel.png', 'gotoLevelSelect', 660, 380, that);
+	  this.layer.addNode(nextlevel);
+	  
+	  
+	  this.layer.addNode(l11);
+	  this.layer.addNode(l12);
+	  this.layer.addNode(l13);
+	  this.layer.addNode(l14);
+	  this.layer.addNode(l15);
+	  this.layer.addNode(l16);
+	  this.layer.addNode(l17);
+	  this.layer.addNode(l18);
+	  this.layer.addNode(l19);
+	  this.layer.addNode(l110);
+	  
+	  }
+	  });
+
+
 
 /*
  create a map screen
@@ -382,7 +669,7 @@ Tower=pulse.Sprite.extend({
     }
 });
 //Begin map and map cell code
-function GridCell(tower, isgoal, x, y) {
+function GridCell(tower, isgoal) {
     if (tower)
         this.Tower = tower;
     if (isgoal) {
@@ -392,12 +679,6 @@ function GridCell(tower, isgoal, x, y) {
     else {
         this.DistanceFromGoal = 99999999;
         this.DirectDistanceFromGoal = 99999999;
-    }
-    if (x || x == 0){
-        this.x = x;
-    }
-    if (y || y == 0){
-        this.y = y;
     }
     this.Robot = [];
 }
@@ -450,12 +731,12 @@ GridCell.prototype.makegoal = function () {
 };
 function LogicalMap(goalx, goaly) {
     this.Map = new Array();
-    for (var k = 0; k < this.MAP_WIDTH; k++) {
+    for (var k = 0; k < this.MAP_HEIGHT; k++) {
         this.Map[k] = [];
     }
     for (var i = 0; i < this.MAP_HEIGHT; i++) {
         for (var j = 0; j < this.MAP_WIDTH; j++) {
-            this.Map[j][i] = new GridCell(undefined, 0, j, i);
+            this.Map[i][j] = new GridCell();
         }
     }
     if ((goalx || goalx == 0) && (goaly || goaly == 0)) {
@@ -481,9 +762,9 @@ LogicalMap.prototype.getMAP_WIDTH = function () {
 //Supposedly will simplify the targeting algorithm for towers
 LogicalMap.prototype.getNearestToGoalCellContainingRobot = function () {
     var qeue = [];
-    for (var i = 0; i < this.MAP_WIDTH; i++) {
-        for (var j = 0; j < this.MAP_HEIGHT; j++) {
-            qeue.push(this.Map[i][j]);
+    for (var i = 0; i < this.MAP_HEIGHT; i++) {
+        for (var j = 0; j < this.MAP_WIDTH; j++) {
+            qeue.push(this.MAP[i][j]);
         }
     }
     qeue.sort(function (a, b) {
@@ -499,8 +780,8 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
     var hasupdated = true;
     while (hasupdated) {
         hasupdated = false;
-        for (var j = 0; j < this.MAP_HEIGHT; j++) {
-            for (var i = 0; i < this.MAP_WIDTH; i++) {
+        for (var i = 0; i < this.MAP_HEIGHT; i++) {
+            for (var j = 0; j < this.MAP_WIDTH; j++) {
                 var currentlowest = this.Map[i][j].getDistanceFromGoal();
                 var temp;
                 if (i > 0) {
@@ -509,7 +790,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (i < this.MAP_WIDTH - 1) {
+                if (i < this.MAP_HEIGHT - 1) {
                     temp = this.Map[i + 1][j].getDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -521,7 +802,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (j < this.MAP_HEIGHT - 1) {
+                if (j < this.MAP_WIDTH - 1) {
                     temp = this.Map[i][j + 1].getDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -558,8 +839,8 @@ LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
     var hasupdated = true;
     while (hasupdated) {
         hasupdated = false;
-        for (var j = 0; j < this.MAP_HEIGHT; j++) {
-            for (var i = 0; i < this.MAP_WIDTH; i++) {
+        for (var i = 0; i < this.MAP_HEIGHT; i++) {
+            for (var j = 0; j < this.MAP_WIDTH; j++) {
                 var currentlowest = this.Map[i][j].getDirectDistanceFromGoal();
                 var temp;
                 if (i > 0) {
@@ -568,7 +849,7 @@ LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (i < this.MAP_WIDTH - 1) {
+                if (i < this.MAP_HEIGHT - 1) {
                     temp = this.Map[i + 1][j].getDirectDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -580,7 +861,7 @@ LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
                         currentlowest = temp;
                     }
                 }
-                if (j < this.MAP_HEIGHT - 1) {
+                if (j < this.MAP_WIDTH - 1) {
                     temp = this.Map[i][j + 1].getDirectDistanceFromGoal();
                     if (temp < currentlowest) {
                         currentlowest = temp;
@@ -589,6 +870,7 @@ LogicalMap.prototype.updateDirectDistancesFromGoal = function () {
                 if (((currentlowest + 1) < this.Map[i][j].getDirectDistanceFromGoal())) {
                     this.Map[i][j].setDirectDistanceFromGoal(currentlowest + 1);
                     hasupdated = true;
+
                 }
 
             }
