@@ -8,6 +8,10 @@ pulse.ready(function () {
         gameWindow: 'helloWindow'
     });
 
+	var layer = new pulse.Layer();//new add for Robot
+	layer.anchor = { x: 0, y: 0 };//new add for Robot
+	
+	
 	var splashScene = new rva.SplashScene();
 	var mainScene = new rva.MainScene();
 	var storeScene1 = new rva.StoreScene1();
@@ -23,6 +27,8 @@ pulse.ready(function () {
 	var mapScene1 = new rva.MapScene();
 	var mapScene2 = new rva.MapSceneTwo();
 	var pauseScene = new rva.PauseScene();
+	
+	gameScene.addLayer (layer);//new add for robot
 
     splashScene.events.bind('gameStart', function () {
         engine.scenes.deactivateScene(splashScene);
@@ -938,6 +944,8 @@ rva.GameScene = pulse.Scene.extend({
          towerType:4
          });*/
 
+		 
+		 
         var bg = new pulse.Sprite({
             src: 'img/field_bg.png',
             size: {
@@ -971,6 +979,15 @@ rva.GameScene = pulse.Scene.extend({
         var animalShop = new pulse.Layer({size: {x: 150, y: 150}});
         animalShop.position = {x: 525, y: 225};
 		
+			//Robots 
+		var robot = new Robot();
+     // ball.position = { x: args.position.x, y: args.position.y };
+	    robot.position = { x: 0, y: 0 };
+        this.layer.addNode(robot);
+		this.state = 'playing';
+		this.time = 0;
+		this.speed = 10000;
+		//Robots
 
         var visibleTowers = [3];
         /* visibleTowers[0]=storeTower[0];
@@ -988,14 +1005,84 @@ rva.GameScene = pulse.Scene.extend({
         });
         this.addLayer(animalShop);
 		
+	
 				 
 		 var testtower = new Tower();
 		 testtower.position = {x: 220, y: 220};
 		 testtower.size = { width: 50, height:50};
 		 this.layer.addNode(testtower);
 		 console.log(testtower);
+    },
+	update : function(elapsed) {
+	
+    this._super(elapsed);
+
+    if(this.state == 'playing') {
+      this.time += elapsed;
+      if(this.time >= this.speed) {
+        this.updateRobot();
+
+      
+        this.time = 0;
+      }
     }
+  },
+  
+updateRobot: function() {
+
+		var robot = new Robot();
+     // ball.position = { x: args.position.x, y: args.position.y };
+	    robot.position = { x: 0, y: 0 };
+        this.layer.addNode(robot);
+  
+  }
 });
+
+
+var Robot = pulse.Sprite.extend({
+   init: function(args) {
+
+      args = args || {};
+	   args.src = 'img/spider_robot.png';
+     this.velocity = { x: 0, y: (Math.random() * 300) - 150 };
+	
+
+      this._super(args);
+   },
+   update: function(elapsedMS) {
+
+      var newX = this.position.x + this.velocity.x * (elapsedMS / 1000);
+      var newY = this.position.y + this.velocity.y * (elapsedMS / 1000);
+
+      if(newX - (this.size.width / 2) <= 0) {
+         newX = this.size.width / 2;
+         this.velocity.x *= -1;
+      }
+
+      if(newY - (this.size.height / 2) <= 0) {
+         newY = this.size.height / 2;
+         this.velocity.y *= -1;
+      }
+
+      if(newX + (this.size.width / 2) >= 450) {
+         newX = 450 - this.size.width / 2;
+         this.velocity.x *= -1;
+      }
+
+      if(newY + (this.size.height / 2) >= 450) {
+         newY = 450 - this.size.height / 2;
+         this.velocity.y *= -1;
+      }
+
+      this.position.x = newX;
+      this.position.y = newY;
+
+      this._super(elapsedMS);
+   }
+});
+
+
+
 towerTypeEnum={
     SQUIRREL:{name:'Squirrel',texture:'GRAPHICS/Characters/squirrel-without-helmat.png',cost:15,range:2,damage:5,maxHealth:50,description:''},
     BEAR:{name:'Bear',texture:'GRAPHICS/Characters/bear.png',cost:20,range:1,damage:10,maxHealth:150,description:''},
