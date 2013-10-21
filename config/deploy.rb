@@ -35,7 +35,7 @@ namespace :deploy do
     run "rm -f #{current_path} && ln -s #{release_path} #{current_path}"
   end
 end
-after "deploy:symlink", "deploy:resymlink"
+after "deploy:create_symlink", "deploy:resymlink"
 
 namespace :postgres do
   task :create_role do
