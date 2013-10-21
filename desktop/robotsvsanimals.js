@@ -1182,7 +1182,7 @@ function LogicalMap(goalx, goaly) {
         this.updateDirectDistancesFromGoal();
     }
 }
-LogicalMap.prototype.MAP_HEIGHT = 9;
+LogicalMap.prototype.MAP_HEIGHT = 9 ;
 LogicalMap.prototype.MAP_WIDTH = 18;
 LogicalMap.prototype.getMap = function () {
     return this.Map;
