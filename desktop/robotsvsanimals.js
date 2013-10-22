@@ -1,6 +1,6 @@
 pulse.ready(function () {
     // Create an engine.
-    var engine = new pulse.Engine({
+    engine = new pulse.Engine({
         size: {
             width: 750,
             height: 450
@@ -22,7 +22,7 @@ pulse.ready(function () {
     var buytreats = new rva.Buytreats();
     var leaderboardScene = new rva.LeaderboardScene();
     var levelComplete = new rva.LevelComplete();
-    var levelFailed = new rva.LevelFailed();
+    levelFailed = new rva.LevelFailed();
     gameScene = new rva.GameScene();
     var mapScene1 = new rva.MapScene();
     var mapScene2 = new rva.MapSceneTwo();
