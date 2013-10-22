@@ -59,6 +59,7 @@ pulse.ready(function () {
     mapScene1.events.bind('gotoGamePlay', function () {
         engine.scenes.deactivateScene(mapScene1);
         engine.scenes.activateScene(gameScene);
+		paused = false;
     });
     mapScene1.events.bind('backToMain', function () {
         engine.scenes.deactivateScene(mapScene1);
@@ -149,13 +150,12 @@ pulse.ready(function () {
         paused = true;
     });
     gameScene.events.bind('normalSpeed', function () {
-        //normal speed
+        paused = false;
     });
     gameScene.events.bind('fastForward', function () {
-        //fast forward
+        //
     });
     pauseScene.events.bind('resume', function () {
-        paused = false;
         engine.scenes.deactivateScene(pauseScene);
     });
     pauseScene.events.bind('mainMenu', function () {
@@ -165,6 +165,7 @@ pulse.ready(function () {
     });
     levelComplete.events.bind('playagain', function () {
         engine.scenes.deactivateScene(levelComplete);
+		paused = false;
     });
     levelComplete.events.bind('continue', function () {
         engine.scenes.deactivateScene(levelComplete);
@@ -173,6 +174,7 @@ pulse.ready(function () {
     });
     levelFailed.events.bind('playagain', function () {
         engine.scenes.deactivateScene(levelFailed);
+		paused = false;
     });
     levelFailed.events.bind('continue', function () {
         engine.scenes.deactivateScene(levelFailed);
@@ -949,11 +951,7 @@ rva.GameScene = pulse.Scene.extend({
         this.towers=new Array();
 
         var bg = new pulse.Sprite({
-            src: 'img/field_bg.png',
-            size: {
-                width: 750,
-                height: 450
-            }
+            src: 'img/whitebgnew.png',
         });
         bg.position = { x: 375, y: 225 };
         this.layer.addNode(bg);
@@ -967,6 +965,12 @@ rva.GameScene = pulse.Scene.extend({
         });
         gridbg.position = { x: 225, y: 225 };
         this.layer.addNode(gridbg);
+		
+		var shopimage = new pulse.Sprite({
+            src: 'img/ingamemenu.png',
+        });
+        shopimage.position = { x: 600, y: 200 };
+        this.layer.addNode(shopimage);
 
         var playButton = buttonMaker('GRAPHICS/Pause(In-Game)/pause_botton.png', 'pause', 545, 420, that);
         playButton.size = {width: 30, height:30};
@@ -981,7 +985,6 @@ rva.GameScene = pulse.Scene.extend({
         var animalShop = new pulse.Layer({size: {x: 150, y: 150}});
         animalShop.position = {x: 525, y: 225};
 
-
         //Robots
         var robot = new Robot();
         // ball.position = { x: args.position.x, y: args.position.y };
@@ -993,31 +996,31 @@ rva.GameScene = pulse.Scene.extend({
         this.speed = 10000;
         //Robots
 
-        var shift=0;
-        var visibleTowers = [3];
-        visibleTowers[0]=storeTower[0];
-        visibleTowers[0].position={x:485,y:45};
-        visibleTowers[1]=storeTower[1];
-        visibleTowers[1].position={x:485,y:105};
-        visibleTowers[2]=storeTower[2];
-        visibleTowers[2].position={x:485,y:165};
-        for(var c=0;c<3;c++){
-            visibleTowers[c].events.bind('dragdrop',function(e){
-                var temp=storeTower[shift+c];
-                temp.position= e.position;
-                logicalmap.getMap()[Math.floor(temp.position.x/50)][Math.floor(temp.position.y/50)].setTower(temp);
-                logicalmap.updateDistancesFromGoal();
-            });
-            this.layer.addNode(visibleTowers[c]);
-        }
+        // var shift=0;
+        // var visibleTowers = [3];
+        // visibleTowers[0]=storeTower[0];
+        // visibleTowers[0].position={x:485,y:45};
+        // visibleTowers[1]=storeTower[1];
+        // visibleTowers[1].position={x:485,y:105};
+        // visibleTowers[2]=storeTower[2];
+        // visibleTowers[2].position={x:485,y:165};
+        // for(var c=0;c<3;c++){
+            // visibleTowers[c].events.bind('dragdrop',function(e){
+                // var temp=storeTower[shift+c];
+                // temp.position= e.position;
+                // logicalmap.getMap()[Math.floor(temp.position.x/50)][Math.floor(temp.position.y/50)].setTower(temp);
+                // logicalmap.updateDistancesFromGoal();
+            // });
+            // this.layer.addNode(visibleTowers[c]);
+        // }
 
-        var testtower = new Tower({towerType:towerTypeEnum.SQUIRREL});
-        testtower.position = {x: 220, y: 220};
-        testtower.size = { width: 50, height:50};
-        var cells=logicalmap.getMap();
-        cells[Math.floor(testtower.position.x/50)][Math.floor(testtower.position.y/50)].setTower(testtower);
-        logicalmap.updateDistancesFromGoal();
-        this.layer.addNode(testtower);
+        // var testtower = new Tower({towerType:towerTypeEnum.SQUIRREL});
+        // testtower.position = {x: 220, y: 220};
+        // testtower.size = { width: 50, height:50};
+        // var cells=logicalmap.getMap();
+        // cells[Math.floor(testtower.position.x/50)][Math.floor(testtower.position.y/50)].setTower(testtower);
+        // logicalmap.updateDistancesFromGoal();
+        // this.layer.addNode(testtower);
 
         var testtower1 = new Tower({towerType:towerTypeEnum.SQUIRREL});
         testtower1.position = {x: 220, y: 20};
@@ -1042,14 +1045,16 @@ rva.GameScene = pulse.Scene.extend({
         cells[Math.floor(testtower3.position.x/50)][Math.floor(testtower3.position.y/50)].setTower(testtower3);
         logicalmap.updateDistancesFromGoal();
         this.layer.addNode(testtower3);
+		
+		
+		
+		
 
 
-        var base=new pulse.Sprite({src:'GRAPHICS/Environment/HomeBase-Tree.png'});
+        var base=new pulse.Sprite({src:'GRAPHICS/Environment/HomeBase-Tree2.png'});
         base.size={width:50,height:50};
         base.position={x:425,y:425};
         this.layer.addNode(base);
-
-        console.log(testtower);
     },
     update : function(elapsed) {
         if (paused) return;

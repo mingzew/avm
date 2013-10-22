@@ -1,5 +1,5 @@
 towerTypeEnum={
-    SQUIRREL:{name:'Squirrel',texture:'GRAPHICS/Characters/squirrel.png',cost:15,range:2,damage:5,maxHealth:50,description:''},
+    SQUIRREL:{name:'Squirrel',texture:'GRAPHICS/Characters/squirrel2.png',cost:15,range:2,damage:5,maxHealth:50,description:''},
     BEAR:{name:'Bear',texture:'GRAPHICS/Characters/bear.png',cost:20,range:1,damage:10,maxHealth:150,description:''},
     SPIDER:{name:'Spider',texture:'GRAPHICS/Characters/spider.png',cost:5,range:2,damage:0,effectLength:0,maxHealth:25,description:'',canSlow:true},
     SNAKE:{name:'Snake',texture:'GRAPHICS/Characters/snake.png',cost:10,range:1,damage:1,damageOverTime:3,effectLength:5,maxHealth:17,description:''},
