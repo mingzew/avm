@@ -7,7 +7,7 @@ pulse.ready(function () {
         },
         gameWindow: 'helloWindow'
     });
-
+    paused = false;
     var layer = new pulse.Layer();//new add for Robot
     layer.anchor = { x: 0, y: 0 };//new add for Robot
 
@@ -146,6 +146,7 @@ pulse.ready(function () {
     });
     gameScene.events.bind('pause', function () {
         engine.scenes.activateScene(pauseScene);
+        paused = true;
     });
     gameScene.events.bind('normalSpeed', function () {
         //normal speed
@@ -154,6 +155,7 @@ pulse.ready(function () {
         //fast forward
     });
     pauseScene.events.bind('resume', function () {
+        paused = false;
         engine.scenes.deactivateScene(pauseScene);
     });
     pauseScene.events.bind('mainMenu', function () {
@@ -1050,7 +1052,7 @@ rva.GameScene = pulse.Scene.extend({
         console.log(testtower);
     },
     update : function(elapsed) {
-
+        if (paused) return;
         for(index = 0; index < this.robits.length; ++index){
             if(this.robits[index].getHealth() <= 0){
                 this.layer.removeNode(this.robits[index].name);

@@ -16,6 +16,7 @@ var Robot = pulse.Sprite.extend({
    
    
    update: function(elapsedMS) {
+      if (paused) return;
 	  if (this.health <= 0){
 	  cellgrid[this.x][this.y].removeRobot(this);
 	  gameScene.layer.removeNode(this);
