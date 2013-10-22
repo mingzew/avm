@@ -7,7 +7,8 @@ var Robot = pulse.Sprite.extend({
      this.velocity = { x: 0, y: (250) - 150 };
 		this.timer = 500;
 		this.RobotType = 'Spider';
-		this.health = 50;
+		this.health = 30;
+       dead = false;
 		this.damage = 1;
 		this.canFly = false;
       this._super(args);
@@ -16,12 +17,9 @@ var Robot = pulse.Sprite.extend({
    
    update: function(elapsedMS) {
       if (paused) return;
-	  if (this.health <= 0){
-	  cellgrid[this.x][this.y].removeRobot(this);
-	  gameScene.layer.removeNode(this);
-	  }
        elapsedMS = 500/30;
 	  this.timer += elapsedMS;
+       if (this.dead) gameScene.layer.removeNode(this);
       var newX = this.position.x + this.velocity.x * (elapsedMS / 1000);
       var newY = this.position.y + this.velocity.y * (elapsedMS / 1000);
 	  var cellgrid = logicalmap.getMap();
@@ -68,6 +66,15 @@ var Robot = pulse.Sprite.extend({
       this._super(elapsedMS);
    },
        takeDamage : function(Tower){
+       if (this.health - Tower.damage <= 0){
+           this.position.x = -400;
+           this.position.y = -400;
+           logicalmap.Map[this.x][this.y].removeRobot(this);
+           this.dead = true;
+    //       gameScene.layer.removeNode(this);
+           return;
+       }
+
        this.health -= Tower.damage;
     },
 

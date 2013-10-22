@@ -1076,7 +1076,7 @@ rva.GameScene = pulse.Scene.extend({
     update : function(elapsed) {
         if (paused) return;
         for(index = 0; index < this.robits.length; ++index){
-            if(this.robits[index].getHealth() <= 0){
+            if(this.robits[index].dead){
                 this.layer.removeNode(this.robits[index].name);
                 this.robits[index].delete;
             }
