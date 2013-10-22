@@ -47,7 +47,7 @@ Tower=pulse.Sprite.extend({
      * Searches through the map for the closest robot in range.
      */
     getTarget: function(){
-        //this.target=logicalmap.getNearestToGoalCellContainingRobot(this);
+        this.target=logicalmap.getNearestToGoalCellContainingRobot(this);
     },
     /**
      * Takes a shot at the robot after targeting it.
@@ -55,7 +55,7 @@ Tower=pulse.Sprite.extend({
     fire:function(){
         this.getTarget();
         if(this.reload==0&&this.target!=null){
-            this.target.takeDamage(this);
+            this.target.getRobot()[0].takeDamage(this);
             this.reload = this.fireRate;
         }
     },

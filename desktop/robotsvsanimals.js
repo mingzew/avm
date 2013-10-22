@@ -1008,6 +1008,7 @@ rva.GameScene = pulse.Scene.extend({
             // visibleTowers[c].events.bind('dragdrop',function(e){
                 // var temp=storeTower[shift+c];
                 // temp.position= e.position;
+                // this.towers.push(temp);
                 // logicalmap.getMap()[Math.floor(temp.position.x/50)][Math.floor(temp.position.y/50)].setTower(temp);
                 // logicalmap.updateDistancesFromGoal();
             // });
@@ -1028,6 +1029,7 @@ rva.GameScene = pulse.Scene.extend({
         var cells=logicalmap.getMap();
         cells[Math.floor(testtower1.position.x/50)][Math.floor(testtower1.position.y/50)].setTower(testtower1);
         logicalmap.updateDistancesFromGoal();
+        this.towers.push(testtower1);
         this.layer.addNode(testtower1);
 
         var testtower2 = new Tower({towerType:towerTypeEnum.SQUIRREL});
@@ -1036,6 +1038,7 @@ rva.GameScene = pulse.Scene.extend({
         var cells=logicalmap.getMap();
         cells[Math.floor(testtower2.position.x/50)][Math.floor(testtower2.position.y/50)].setTower(testtower2);
         logicalmap.updateDistancesFromGoal();
+        this.towers.push(testtower2);
         this.layer.addNode(testtower2);
 
         var testtower3 = new Tower({towerType:towerTypeEnum.SQUIRREL});
@@ -1044,6 +1047,7 @@ rva.GameScene = pulse.Scene.extend({
         var cells=logicalmap.getMap();
         cells[Math.floor(testtower3.position.x/50)][Math.floor(testtower3.position.y/50)].setTower(testtower3);
         logicalmap.updateDistancesFromGoal();
+        this.towers.push(testtower3);
         this.layer.addNode(testtower3);
 		
 		
