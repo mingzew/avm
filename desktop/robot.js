@@ -4,9 +4,14 @@ var Robot = pulse.Sprite.extend({
       args = args || {};
 	   args.src = 'img/spider_robot.png';
      this.velocity = { x: 0, y: (Math.random() * 300) - 150 };
-	
+	  this.health = 10;
 
       this._super(args);
+
+      this.events.bind('click', 
+         function(foo){
+            this.health = 0;
+         });
    },
    update: function(elapsedMS) {
 
@@ -36,6 +41,18 @@ var Robot = pulse.Sprite.extend({
       this.position.x = newX;
       this.position.y = newY;
 
+
+
       this._super(elapsedMS);
-   }
+
+
+   },
+
+    takeDamage : function(Tower){
+       this.health -= Tower.damage;
+    },
+
+    getHealth : function(){
+      return this.health;
+    }
 });

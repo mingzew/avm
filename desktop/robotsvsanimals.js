@@ -932,6 +932,10 @@ rva.GameScene = pulse.Scene.extend({
             towerType:towerTypeEnum.SQUIRREL
         });
 
+        //create an array to store all of the robots in, we will need this to check if
+        //any of them are dead.
+        this.robits = new Array();
+
         var bg = new pulse.Sprite({
             src: 'img/field_bg.png',
             size: {
@@ -965,11 +969,13 @@ rva.GameScene = pulse.Scene.extend({
         var animalShop = new pulse.Layer({size: {x: 150, y: 150}});
         animalShop.position = {x: 525, y: 225};
 
+
         //Robots
         var robot = new Robot();
         // ball.position = { x: args.position.x, y: args.position.y };
         robot.position = { x: 0, y: 0 };
         this.layer.addNode(robot);
+        this.robits.push(robot);
         this.state = 'playing';
         this.time = 0;
         this.speed = 10000;
@@ -994,6 +1000,13 @@ rva.GameScene = pulse.Scene.extend({
     },
     update : function(elapsed) {
 
+        for(index = 0; index < this.robits.length; ++index){
+            if(this.robits[index].getHealth() <= 0){
+                this.layer.removeNode(this.robits[index].name);
+                this.robits[index].delete;
+            }
+        }
+
         this._super(elapsed);
 
         if(this.state == 'playing') {
@@ -1013,6 +1026,8 @@ rva.GameScene = pulse.Scene.extend({
         // ball.position = { x: args.position.x, y: args.position.y };
         robot.position = { x: 0, y: 0 };
         this.layer.addNode(robot);
+
+        this.robits.push(robot);
 
     }
 });
