@@ -23,7 +23,7 @@ pulse.ready(function () {
     var leaderboardScene = new rva.LeaderboardScene();
     var levelComplete = new rva.LevelComplete();
     var levelFailed = new rva.LevelFailed();
-    var gameScene = new rva.GameScene();
+    gameScene = new rva.GameScene();
     var mapScene1 = new rva.MapScene();
     var mapScene2 = new rva.MapSceneTwo();
     var pauseScene = new rva.PauseScene();
@@ -907,7 +907,7 @@ rva.LevelFailed = pulse.Scene.extend({
 rva.GameScene = pulse.Scene.extend({
     init: function (params) {
         this._super(params);
-
+		logicalmap = new LogicalMap(8, 8);
         this.layer = new pulse.Layer();
         this.layer.position = { x: 375, y: 225 };
         this.addLayer(this.layer);
@@ -973,7 +973,7 @@ rva.GameScene = pulse.Scene.extend({
         //Robots
         var robot = new Robot();
         // ball.position = { x: args.position.x, y: args.position.y };
-        robot.position = { x: 0, y: 0 };
+        robot.position = { x: 25, y: 25 };
         this.layer.addNode(robot);
         this.robits.push(robot);
         this.state = 'playing';
@@ -1024,7 +1024,7 @@ rva.GameScene = pulse.Scene.extend({
 
         var robot = new Robot();
         // ball.position = { x: args.position.x, y: args.position.y };
-        robot.position = { x: 0, y: 0 };
+        robot.position = { x: 25, y: 25 };
         this.layer.addNode(robot);
 
         this.robits.push(robot);

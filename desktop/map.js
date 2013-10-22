@@ -59,13 +59,12 @@ GridCell.prototype.isRobotPresent = function () {
     return this.Robot.length == 0;
 };
 GridCell.prototype.isgoal = function () {
-    return this.DistanceFromGoal == 0;
+    return (this.DistanceFromGoal == 0);
 };
 GridCell.prototype.makegoal = function () {
     this.DistanceFromGoal = 0;
     this.DirectDistanceFromGoal = 0;
 };
-
 function LogicalMap(goalx, goaly) {
     this.Map = new Array();
     for (var k = 0; k < this.MAP_WIDTH; k++) {
@@ -157,6 +156,11 @@ LogicalMap.prototype.helper = function (cell, qeue, range) {
     return qeue;
 }
 LogicalMap.prototype.updateDistancesFromGoal = function () {
+for (var i = 0; i < this.MAP_WIDTH; i++) {
+            for (var j = 0; j < this.MAP_HEIGHT; j++) {
+			if(!this.Map[i][j].isgoal()) this.Map[i][j].DistanceFromGoal = 9999999999;
+			}
+			}
     var hasupdated = true;
     while (hasupdated) {
         hasupdated = false;
@@ -196,6 +200,7 @@ LogicalMap.prototype.updateDistancesFromGoal = function () {
                 if ((!this.Map[i][j].isTowerPresent()) && ((currentlowest + 1) < this.Map[i][j].getDistanceFromGoal())) {
                     this.Map[i][j].setDistanceFromGoal(currentlowest + 1);
                     hasupdated = true;
+					
 
                 }
 
