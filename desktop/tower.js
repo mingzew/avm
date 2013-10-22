@@ -7,7 +7,7 @@ towerTypeEnum={
 };
 Tower=pulse.Sprite.extend({
     init: function(params){
-		params = params || {};
+        params = params || {};
         this.name=params.towerType.name;
         this.cost=params.towerType.cost;
         this.range=params.towerType.range;
@@ -27,26 +27,28 @@ Tower=pulse.Sprite.extend({
         this.canConfuse=params.towerType.canConfuse;
         this.canSlow=params.towerType.canSlow;
         params.size={width:50,height:50};
-		params.src = params.towerType.texture;
+        params.src = params.towerType.texture;
         this._super(params);
         this.logicalMap=null;
     },
     /**
      *  Should be called in every game loop for each tower.
      */
-    /*update:function(elapsed){
-        if(this.reload==0){
-            //this.fire(logicalMap);
-        }else{
-            this.reload--;
+    update:function(elapsed){
+        if(this.isAlive){
+            if(this.reload==0){
+                //this.fire(logicalMap);
+            }else{
+                this.reload--;
+            }
         }
-        this.__super(elapsed);
-    },*/
+        this._super(elapsed);
+    },
     /**
      * Searches through the map for the closest robot in range.
      * @param logicalMap
      */
-   getTarget: function(){
+    getTarget: function(){
         this.target=logicalMap.prototype.getNearestToGoalCellContainingRobot(this);
     },
     /**
@@ -56,7 +58,7 @@ Tower=pulse.Sprite.extend({
     fire:function(){
         this.getTarget();
         if(this.reload==0&&this.target!=null){
-           this.target.takeDamage(this);
+            this.target.takeDamage(this);
             this.reload = this.fireRate;
         }
     },
@@ -71,7 +73,7 @@ Tower=pulse.Sprite.extend({
             this.health-=robot.damage;
         }
         if (this.health <= 0) {
-           //remove
+            //remove
         }
     },
     /**

@@ -981,6 +981,7 @@ rva.GameScene = pulse.Scene.extend({
         this.speed = 10000;
         //Robots
 
+        var shift=0;
         var visibleTowers = [3];
         visibleTowers[0]=storeTower[0];
         visibleTowers[0].position={x:485,y:45};
@@ -989,6 +990,14 @@ rva.GameScene = pulse.Scene.extend({
         visibleTowers[2]=storeTower[2];
         visibleTowers[2].position={x:485,y:165};
         for(var c=0;c<3;c++){
+            visibleTowers[c].events.bind('dragdrop',function(e){
+               for(cell in grid){
+                   if(cell.contains(e.position)){
+                       cell.setTower(storeTower[c+shift]);
+                       cell.getTower().position=cell.position;
+                   }
+               }
+            });
             this.layer.addNode(visibleTowers[c]);
         }
 
