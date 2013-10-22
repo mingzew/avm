@@ -1003,7 +1003,7 @@ rva.GameScene = pulse.Scene.extend({
             visibleTowers[c].events.bind('dragdrop',function(e){
                 var temp=storeTower[shift+c];
                 temp.position= e.position;
-                logicalmap.getMap()[temp.position.x][temp.position.y].setTower(temp);
+                logicalmap.getMap()[Math.floor(temp.position.x/50)][Math.floor(temp.position.y/50)].setTower(temp);
                 logicalmap.updateDistancesFromGoal();
             });
             this.layer.addNode(visibleTowers[c]);
@@ -1032,6 +1032,20 @@ rva.GameScene = pulse.Scene.extend({
         cells[Math.floor(testtower2.position.x/50)][Math.floor(testtower2.position.y/50)].setTower(testtower2);
         logicalmap.updateDistancesFromGoal();
         this.layer.addNode(testtower2);
+
+        var testtower3 = new Tower({towerType:towerTypeEnum.SQUIRREL});
+        testtower3.position = {x: 375, y: 425};
+        testtower3.size = { width: 50, height:50};
+        var cells=logicalmap.getMap();
+        cells[Math.floor(testtower3.position.x/50)][Math.floor(testtower3.position.y/50)].setTower(testtower3);
+        logicalmap.updateDistancesFromGoal();
+        this.layer.addNode(testtower3);
+
+
+        var base=new pulse.Sprite({src:'GRAPHICS/Environment/HomeBase-Tree.png'});
+        base.size={width:50,height:50};
+        base.position={x:425,y:425};
+        this.layer.addNode(base);
 
         console.log(testtower);
     },
