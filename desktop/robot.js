@@ -5,7 +5,7 @@ var Robot = pulse.Sprite.extend({
       args = args || {};
 	   args.src = 'img/spider_robot.png';
      this.velocity = { x: 0, y: (250) - 150 };
-		this.timer = 0;
+		this.timer = 500;
 		this.RobotType = 'Spider';
 		this.health = 50;
 		this.damage = 1;
@@ -20,20 +20,21 @@ var Robot = pulse.Sprite.extend({
 	  cellgrid[this.x][this.y].removeRobot(this);
 	  gameScene.layer.removeNode(this);
 	  }
+       elapsedMS = 500/30;
 	  this.timer += elapsedMS;
       var newX = this.position.x + this.velocity.x * (elapsedMS / 1000);
       var newY = this.position.y + this.velocity.y * (elapsedMS / 1000);
 	  var cellgrid = logicalmap.getMap();
-	  if (cellgrid[this.x][this.y].isgoal()){
-	  cellgrid[this.x][this.y].removeRobot(this);
-	  gameScene.layer.removeNode(this);
-          engine.scenes.activateScene(levelFailed);
-		  paused = true;
-	  }
+
 	        this.position.x = newX;
       this.position.y = newY;
 	  if (this.timer >= 500){
-	  
+          if (cellgrid[this.x][this.y].isgoal()){
+              cellgrid[this.x][this.y].removeRobot(this);
+              gameScene.layer.removeNode(this);
+              engine.scenes.activateScene(levelFailed);
+              paused = true;
+          }
 	  this.timer = 0;
 		var nextlocation = cellgrid[this.x][this.y]; 
 		//check if south is in bounds and closer to goal than the previous nextlocation, if so it's the new nextlocation
@@ -56,7 +57,7 @@ var Robot = pulse.Sprite.extend({
 		 this.velocity.x = (nextlocation.x - this.x) * totalvelocity;
 		 this.velocity.y = (nextlocation.y - this.y) * totalvelocity;
 		 this.x = nextlocation.x; this.y = nextlocation.y;
-		 this.position.x = (this.x * 50) + 25; this.position.y = (this.y * 50) + 25;
+	//	 this.position.x = (this.x * 50) + 25; this.position.y = (this.y * 50) + 25;
 			  }
 	  if(this.position.x > 425){
 	  this.position.x = 425;}
