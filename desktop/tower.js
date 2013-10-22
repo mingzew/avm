@@ -29,31 +29,32 @@ Tower=pulse.Sprite.extend({
         params.size={width:50,height:50};
 		params.src = params.towerType.texture;
         this._super(params);
+        this.logicalMap=null;
     },
     /**
      *  Should be called in every game loop for each tower.
      */
-    /*update:function(elapsed){
+    update:function(elapsed){
         if(this.reload==0){
             //this.fire(logicalMap);
         }else{
             this.reload--;
         }
         this.__super(elapsed);
-    },*/
+    },
     /**
      * Searches through the map for the closest robot in range.
      * @param logicalMap
      */
-   getTarget: function(logicalMap){
+   getTarget: function(){
         this.target=logicalMap.prototype.getNearestToGoalCellContainingRobot(this);
     },
     /**
      * Takes a shot at the robot after targeting it.
      * @param logicalMap
      */
-    fire:function(logicalMap){
-        this.getTarget(logicalMap);
+    fire:function(){
+        this.getTarget();
         if(this.reload==0&&this.target!=null){
            this.target.takeDamage(this);
             this.reload = this.fireRate;
