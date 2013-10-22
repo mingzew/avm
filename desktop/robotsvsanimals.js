@@ -1047,7 +1047,20 @@ rva.GameScene = pulse.Scene.extend({
         this.layer.addNode(testtower3);
 		
 		
+		var tree=new pulse.Sprite({src:'GRAPHICS/Environment/basic_tree2.png'});
+        tree.size={width:50,height:50};
+        tree.position={x:225,y:74};
+        this.layer.addNode(tree);
 		
+		var tree=new pulse.Sprite({src:'GRAPHICS/Environment/basic_tree2.png'});
+        tree.size={width:50,height:50};
+        tree.position={x:325,y:325};
+        this.layer.addNode(tree);
+		
+		var rock=new pulse.Sprite({src:'GRAPHICS/Environment/rock_pile2.png'});
+        rock.size={width:50,height:50};
+        rock.position={x:175,y:125};
+        this.layer.addNode(rock);
 		
 
 
