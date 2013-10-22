@@ -4,6 +4,7 @@ var Robot = pulse.Sprite.extend({
 		this.y = 0;
       args = args || {};
 	   args.src = 'img/spider_robot.png';
+	   args.size = {width: 100, height: 100}
      this.velocity = { x: 0, y: (250) - 150 };
 		this.timer = 0;
 		this.RobotType = 'Spider';
