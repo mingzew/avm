@@ -7,6 +7,7 @@ pulse.ready(function () {
         },
         gameWindow: 'helloWindow'
     });
+    robotsspawned = 0;
     paused = false;
     var layer = new pulse.Layer();//new add for Robot
     layer.anchor = { x: 0, y: 0 };//new add for Robot
@@ -1103,7 +1104,7 @@ rva.GameScene = pulse.Scene.extend({
     },
 
     updateRobot: function() {
-
+        robotsspawned++;
         var robot = new Robot();
         // ball.position = { x: args.position.x, y: args.position.y };
         robot.position = { x: 25, y: 25 };
@@ -1111,6 +1112,18 @@ rva.GameScene = pulse.Scene.extend({
 
         this.robits.push(robot);
 
+        if (robotsspawned > 2){
+
+            var robot2 = new Robot();
+            // ball.position = { x: args.position.x, y: args.position.y };
+            robot2.position = { x: 425, y: 25 };
+            robot2.x = 8;
+            robot2.y = 0;
+            this.layer.addNode(robot2);
+
+            this.robits.push(robot2);
+
+        }
     }
 });
 
