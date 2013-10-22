@@ -56,7 +56,7 @@ GridCell.prototype.isTowerPresent = function () {
     return !(this.Tower == undefined);
 };
 GridCell.prototype.isRobotPresent = function () {
-    return this.Robot.length == 0;
+    return this.Robot.length > 0;
 };
 GridCell.prototype.isgoal = function () {
     return (this.DistanceFromGoal == 0);
