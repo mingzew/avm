@@ -16,7 +16,8 @@ var Robot = pulse.Sprite.extend({
    
    update: function(elapsedMS) {
 	  if (this.health <= 0){
-	  //remove robot
+	  cellgrid[this.x][this.y].removeRobot(this);
+	  gameScene.layer.removeNode(this);
 	  }
 	  this.timer += elapsedMS;
       var newX = this.position.x + this.velocity.x * (elapsedMS / 1000);
@@ -24,6 +25,7 @@ var Robot = pulse.Sprite.extend({
 	  var cellgrid = logicalmap.getMap();
 	  if (cellgrid[this.x][this.y].isgoal()){
 	  //TODO remove robot
+	  cellgrid[this.x][this.y].removeRobot(this);
 	  gameScene.layer.removeNode(this);
 	  //TODO report game lost
 	  }
