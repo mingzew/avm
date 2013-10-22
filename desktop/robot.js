@@ -25,10 +25,10 @@ var Robot = pulse.Sprite.extend({
       var newY = this.position.y + this.velocity.y * (elapsedMS / 1000);
 	  var cellgrid = logicalmap.getMap();
 	  if (cellgrid[this.x][this.y].isgoal()){
-	  //TODO remove robot
 	  cellgrid[this.x][this.y].removeRobot(this);
 	  gameScene.layer.removeNode(this);
-	  //TODO report game lost
+          engine.scenes.deactivateScene(gameScene);
+          engine.scenes.activateScene(levelFailed);
 	  }
 	        this.position.x = newX;
       this.position.y = newY;
