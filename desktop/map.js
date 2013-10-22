@@ -138,7 +138,7 @@ LogicalMap.prototype.helper = function (cell, qeue, range) {
             qeue = this.helper(this.Map[cell.x][cell.y - 1], qeue, range - 1);
         }
     }
-    if (cell.y + 1 <= this.MAP_HEIGHT) {
+    if (cell.y + 1 < this.MAP_HEIGHT) {
         if (qeue.indexOf(this.Map[cell.x][cell.y + 1]) == -1) {
             qeue = this.helper(this.Map[cell.x][cell.y + 1], qeue, range - 1);
         }
@@ -148,7 +148,7 @@ LogicalMap.prototype.helper = function (cell, qeue, range) {
             qeue = this.helper(this.Map[cell.x - 1][cell.y], qeue, range - 1);
         }
     }
-    if (cell.x + 1 <= this.MAP_WIDTH) {
+    if (cell.x + 1 < this.MAP_WIDTH) {
         if (qeue.indexOf(this.Map[cell.x + 1][cell.y]) == -1) {
             qeue = this.helper(this.Map[cell.x + 1][cell.y], qeue, range - 1);
         }
