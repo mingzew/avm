@@ -34,14 +34,14 @@ Tower=pulse.Sprite.extend({
     /**
      *  Should be called in every game loop for each tower.
      */
-    update:function(elapsed){
+    /*update:function(elapsed){
         if(this.reload==0){
             //this.fire(logicalMap);
         }else{
             this.reload--;
         }
         this.__super(elapsed);
-    },
+    },*/
     /**
      * Searches through the map for the closest robot in range.
      * @param logicalMap
