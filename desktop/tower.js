@@ -34,6 +34,7 @@ Tower=pulse.Sprite.extend({
      *  Should be called in every game loop for each tower.
      */
     update:function(elapsed){
+        if(paused)return;
         if(this.isAlive){
             if(this.reload==0){
                 this.fire();
