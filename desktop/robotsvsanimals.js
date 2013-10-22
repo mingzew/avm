@@ -917,24 +917,34 @@ rva.GameScene = pulse.Scene.extend({
             size:{width:50,height:50},
             towerType:towerTypeEnum.SQUIRREL,
             dragDropEnabled:true,
-            dragMoveEnabled:false
+            dragMoveEnabled:true
         });
         storeTower[1]=new Tower({
-            towerType:towerTypeEnum.BEAR
+            towerType:towerTypeEnum.BEAR,
+            dragDropEnabled:true,
+            dragMoveEnabled:true
         });
         storeTower[2]=new Tower({
-            towerType:towerTypeEnum.SQUIRREL
+            towerType:towerTypeEnum.SQUIRREL,
+            dragDropEnabled:true,
+            dragMoveEnabled:true
         });
         storeTower[3]=new Tower({
-            towerType:towerTypeEnum.SQUIRREL
+            towerType:towerTypeEnum.SQUIRREL,
+            dragDropEnabled:true,
+            dragMoveEnabled:true
         });
         storeTower[4]=new Tower({
-            towerType:towerTypeEnum.SQUIRREL
+            towerType:towerTypeEnum.SQUIRREL,
+            dragDropEnabled:true,
+            dragMoveEnabled:true
         });
 
         //create an array to store all of the robots in, we will need this to check if
         //any of them are dead.
         this.robits = new Array();
+
+        this.towers=new Array();
 
         var bg = new pulse.Sprite({
             src: 'img/field_bg.png',
@@ -991,12 +1001,10 @@ rva.GameScene = pulse.Scene.extend({
         visibleTowers[2].position={x:485,y:165};
         for(var c=0;c<3;c++){
             visibleTowers[c].events.bind('dragdrop',function(e){
-               for(cell in grid){
-                   if(cell.contains(e.position)){
-                       cell.setTower(storeTower[c+shift]);
-                       cell.getTower().position=cell.position;
-                   }
-               }
+                var temp=storeTower[shift+c];
+                temp.position= e.position;
+                logicalmap.getMap()[temp.position.x][temp.position.y].setTower(temp);
+                logicalmap.updateDistancesFromGoal();
             });
             this.layer.addNode(visibleTowers[c]);
         }
@@ -1004,7 +1012,27 @@ rva.GameScene = pulse.Scene.extend({
         var testtower = new Tower({towerType:towerTypeEnum.SQUIRREL});
         testtower.position = {x: 220, y: 220};
         testtower.size = { width: 50, height:50};
+        var cells=logicalmap.getMap();
+        cells[Math.floor(testtower.position.x/50)][Math.floor(testtower.position.y/50)].setTower(testtower);
+        logicalmap.updateDistancesFromGoal();
         this.layer.addNode(testtower);
+
+        var testtower1 = new Tower({towerType:towerTypeEnum.SQUIRREL});
+        testtower1.position = {x: 220, y: 20};
+        testtower1.size = { width: 50, height:50};
+        var cells=logicalmap.getMap();
+        cells[Math.floor(testtower1.position.x/50)][Math.floor(testtower1.position.y/50)].setTower(testtower1);
+        logicalmap.updateDistancesFromGoal();
+        this.layer.addNode(testtower1);
+
+        var testtower2 = new Tower({towerType:towerTypeEnum.SQUIRREL});
+        testtower2.position = {x: 20, y: 220};
+        testtower2.size = { width: 50, height:50};
+        var cells=logicalmap.getMap();
+        cells[Math.floor(testtower2.position.x/50)][Math.floor(testtower2.position.y/50)].setTower(testtower2);
+        logicalmap.updateDistancesFromGoal();
+        this.layer.addNode(testtower2);
+
         console.log(testtower);
     },
     update : function(elapsed) {
@@ -1017,6 +1045,13 @@ rva.GameScene = pulse.Scene.extend({
         }
 
         this._super(elapsed);
+
+        for(var c;c<this.towers.length;c++){
+            if(this.towers[c].health<=0){
+                this.layer.removeNode(this.towers[c]);
+                this.towers[c].delete;
+            }
+        }
 
         if(this.state == 'playing') {
             this.time += elapsed;
