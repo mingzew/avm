@@ -1,16 +1,17 @@
 towerTypeEnum={
-    SQUIRREL:{name:'Squirrel',texture:'GRAPHICS/Characters/squirrel2.png',cost:15,range:2,damage:5,maxHealth:50,description:''},
-    BEAR:{name:'Bear',texture:'GRAPHICS/Characters/bear.png',cost:20,range:1,damage:10,maxHealth:150,description:''},
-    SPIDER:{name:'Spider',texture:'GRAPHICS/Characters/spider.png',cost:5,range:2,damage:0,effectLength:0,maxHealth:25,description:'',canSlow:true},
-    SNAKE:{name:'Snake',texture:'GRAPHICS/Characters/snake.png',cost:10,range:1,damage:1,damageOverTime:3,effectLength:5,maxHealth:17,description:''},
-    SKUNK:{name:'Skunk',texture:'GRAPHICS/Characters/snake.png',cost:10,range:2,damage:0,effectLength:0,maxHealth:100,description:'',canConfuse:true}
+    SQUIRREL:{towerName:'Squirrel',texture:'GRAPHICS/Characters/squirrel2.png',cost:15,range:2,damage:5,maxHealth:50,description:''},
+    BEAR:{towerName:'Bear',texture:'GRAPHICS/Characters/bear.png',cost:20,range:1,damage:10,maxHealth:150,description:''},
+    SPIDER:{towerName:'Spider',texture:'GRAPHICS/Characters/spider.png',cost:5,range:2,damage:0,effectLength:0,maxHealth:25,description:'',canSlow:true},
+    SNAKE:{towerName:'Snake',texture:'GRAPHICS/Characters/snake.png',cost:10,range:1,damage:1,damageOverTime:3,effectLength:5,maxHealth:17,description:''},
+    SKUNK:{towerName:'Skunk',texture:'GRAPHICS/Characters/snake.png',cost:10,range:2,damage:0,effectLength:0,maxHealth:100,description:'',canConfuse:true}
 };
 Tower=pulse.Sprite.extend({
     init: function(params){
         params = params || {};
-        this.name=params.towerType.name;
+        this.towerName=params.towerType.towerName;
         this.cost=params.towerType.cost;
         this.range=params.towerType.range;
+        this.towerType=params.towerType;
         this.fireRate=30;
         this.reload=0;
         this.damage=params.towerType.damage;
@@ -101,5 +102,5 @@ Tower=pulse.Sprite.extend({
                 this.range++;
             }
         }
-    }
+    },
 });

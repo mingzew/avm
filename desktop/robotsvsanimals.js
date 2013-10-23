@@ -944,6 +944,9 @@ rva.GameScene = pulse.Scene.extend({
             dragDropEnabled:true,
             dragMoveEnabled:true
         });
+        for(var c=0;c<5;c++){
+            storeTower[c].isAlive=false;
+        }
 
         //create an array to store all of the robots in, we will need this to check if
         //any of them are dead.
@@ -997,32 +1000,75 @@ rva.GameScene = pulse.Scene.extend({
         this.speed = 10000;
         //Robots
 
-        // var shift=0;
-        // var visibleTowers = [3];
-        // visibleTowers[0]=storeTower[0];
-        // visibleTowers[0].position={x:485,y:45};
-        // visibleTowers[1]=storeTower[1];
-        // visibleTowers[1].position={x:485,y:105};
-        // visibleTowers[2]=storeTower[2];
-        // visibleTowers[2].position={x:485,y:165};
-        // for(var c=0;c<3;c++){
-            // visibleTowers[c].events.bind('dragdrop',function(e){
-                // var temp=storeTower[shift+c];
-                // temp.position= e.position;
-                // this.towers.push(temp);
-                // logicalmap.getMap()[Math.floor(temp.position.x/50)][Math.floor(temp.position.y/50)].setTower(temp);
-                // logicalmap.updateDistancesFromGoal();
-            // });
-            // this.layer.addNode(visibleTowers[c]);
-        // }
+        var shift=0;
+        var selected=-1;
+        var that=this;
+        var visibleTowers = [2];
+        visibleTowers[0]=storeTower[0];
+        visibleTowers[0].position={x:545,y:75};
+        visibleTowers[0].size={width:60,height:65};
+        visibleTowers[0].events.bind('dragstart',function(e){
+            console.log('dragstart');
+            var temp=storeTower[shift];
+            temp.position= e.position;
+            that.towers.push(temp);
+            logicalmap.getMap()[Math.floor(temp.position.x/50)][Math.floor(temp.position.y/50)].setTower(temp);
+            logicalmap.updateDistancesFromGoal();
+            that.layer.addNode(temp);
+        });
+        visibleTowers[0].events.bind('click',function(e){
+            if(selected!=shift){
+                selected=shift;
+            }else{
+                selected=-1;
+            }
+            console.log(selected);
+        });
+        visibleTowers[1]=storeTower[1];
+        visibleTowers[1].position={x:545,y:176};
+        visibleTowers[1].size={width:50,height:60}
+        visibleTowers[1].events.bind('click',function(e){
+            if(selected!=shift+1){
+                selected=shift+1;
+            }else{
+                selected=-1;
+            }
+            console.log(selected);
+        });
+        for(var c=0;c<2;c++){
+            this.layer.addNode(visibleTowers[c]);
+        }
 
-        // var testtower = new Tower({towerType:towerTypeEnum.SQUIRREL});
-        // testtower.position = {x: 220, y: 220};
-        // testtower.size = { width: 50, height:50};
-        // var cells=logicalmap.getMap();
-        // cells[Math.floor(testtower.position.x/50)][Math.floor(testtower.position.y/50)].setTower(testtower);
-        // logicalmap.updateDistancesFromGoal();
-        // this.layer.addNode(testtower);
+        this.layer.events.bind('click',function(e){
+            if(e.position.x>=0&&e.position.x<450){
+                if(e.position.y>=0&& e.position.y<450){
+                    var cellMap=logicalmap.getMap();
+                    var x=Math.floor(e.position.x/50);
+                    var y=Math.floor(e.position.y/50);
+                    if(cellMap[x][y].isTowerPresent()){
+                        //upgrade
+                    }else{
+                        if(selected>-1){
+                            var temp=new Tower({towerType:storeTower[selected].towerType});
+                            temp.size={width:50,height:50};
+                            temp.position={x:Math.floor(e.position.x/50)*50+25,y:Math.floor(e.position.y/50)*50+25};
+                            cellMap[Math.floor(temp.position.x/50)][Math.floor(temp.position.y/50)].setTower(temp);
+                            logicalmap.updateDistancesFromGoal();
+                            that.towers.push(temp);
+                            that.layer.addNode(temp);
+                        }
+                    }
+                }
+            }
+        });
+
+        var testtower = new Tower({towerType:towerTypeEnum.SQUIRREL});
+        testtower.position = {x: 370, y: 220};
+        testtower.size = { width: 50, height:50};
+        var cells=logicalmap.getMap();
+        cells[Math.floor(testtower.position.x/50)][Math.floor(testtower.position.y/50)].setTower(testtower);
+        logicalmap.updateDistancesFromGoal();
+        this.layer.addNode(testtower);
 
         var testtower1 = new Tower({towerType:towerTypeEnum.SQUIRREL});
         testtower1.position = {x: 220, y: 20};
